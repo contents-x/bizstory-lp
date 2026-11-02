@@ -1,21 +1,84 @@
-/* ビズストーリー LP（lp-bizstory/）: 事例のタブ・一覧・見る窓。
-   事例は共用 WordPress（cms.contentsx.jp）から読むだけ（書き込まない）。
-   - マンガ: GET /works?site=bizmanga（ビズマンガのサイトと同じ並び）
-   - アニメ・ビデオ: GET /bizanime-videos（WP「ビズアニメ・ビズビデオ動画」）
-   WP の値は HTML として扱わない（textContent だけで描く）。画像・動画の URL は決まった場所のものだけ使い、
-   動画は ID から youtube-nocookie の URL を作り直す（WP の embed 値をそのまま iframe に入れない）。
-   ビズマンガのサイトの共通部品（bm-wp-api.js・works.js など）は読み込まない・書き換えない。 */
+/* ビズストーリー LP: 事例のデータ・タブ・一覧・見る窓。
+   このドメインからは共用 WordPress を読めないので、事例はこのファイルの中のデータで表示する（外へは何も送らない）。
+   - マンガ: images/manga/<slug>/01.webp〜（PDF から書き出したページ画像）
+   - 動画: YouTube の ID を入れると youtube-nocookie で再生する。ID が空のものは「準備中」と表示する（枠だけ）
+   事例を足す・差し替えるときは、下の MANGA / ANIME / VIDEO / FEATURE を直す。 */
 (function () {
   'use strict';
 
-  var API = 'https://cms.contentsx.jp/wp-json/contentsx/v1';
-  var TIMEOUT_MS = 8000;
-  var IMAGE_HOSTS = ['https://cms.contentsx.jp/', 'https://i.ytimg.com/'];
-  var YT_ID = /^[A-Za-z0-9_-]{6,20}$/;
-  var YT_LIST = /^[A-Za-z0-9_-]{10,64}$/;
-  var MANGA_ID = /^[A-Za-z0-9_-]{1,80}$/;
-  var ANIME_LABEL = { ADVERTISING: '広告', VTUBER: 'VTuber', MUSIC_VIDEO: 'MV', IP: 'オリジナルIP', VFX: 'VFX', OTHER: '作品' };
+  /* ---------- 事例のデータ ---------- */
 
+  // pages はページ画像の枚数（01.webp〜）
+  var MANGA = [
+    { slug: 'asobi-recruit', title: 'アソビシステム採用漫画（総合職）', client: 'ASOBI SYSTEM', use: '採用', pages: 9 },
+    { slug: 'bizsalesnavi', title: 'マンガでわかるビズセールスナビ', client: 'Contents X（自社サービス）', use: '商品紹介', pages: 12 },
+    { slug: 'opro-soasc', title: 'マンガでわかる収益管理【AIサービス編】', client: '株式会社オプロ', use: '商品紹介', pages: 8 },
+    { slug: 'macnica-ai-school', title: 'マクニカAI研修', client: 'マクニカ', use: '研修・商品紹介', pages: 14 },
+    { slug: 'saigo-no-hoken', title: '最後の保険', client: '楽天モバイル', use: '集客', pages: 7 },
+    { slug: 'gaudia-2', title: 'ガウディア「もうすぐ入学のタクマくん」', client: 'ガウディア', use: '営業・集客', pages: 7 }
+  ];
+
+  // ビズアニメ（YouTube で公開中の作品）
+  var ANIME = [
+    { title: 'Good Bye MV', label: 'MV', youtube: 'V9ZC16hTlZI' },
+    { title: '炎と紫電の空中戦', label: 'アクション', youtube: '7m2ORgR-PDg' },
+    { title: '【MV】目MEめぇ～愛 I eye', label: 'MV', youtube: 'CduBxsawUkQ' },
+    { title: '『カミツギ』第一話 "触るな"', label: 'オリジナルIP', youtube: 'W4ALRjhxyKw' },
+    { title: '【第一話】勇者だった俺が二度目の転生で魔王になった件', label: 'オリジナルIP', youtube: '0OCEK5ebMPQ' },
+    { title: '【オリジナルAIアニメ】ZOO/GAN #01 S-07', label: 'オリジナルIP', youtube: 'AJ_F0ED_Fik' },
+    { title: 'AIで生成した存在しないアニメ【式法戦線】OP', label: 'オリジナルIP', youtube: '8AKjnAPoXTI' },
+    { title: '【MV】仙人ナイトフィーバー', label: 'MV', youtube: 'd1zRWy4QBTI' }
+  ];
+
+  // ビズビデオ（実写動画事例集v2 の37本。サムネイルは images/video/vNN.webp）。youtube が空のものは準備中
+  var VIDEO_GENRES = ['商品・サービスのCM', 'ブランド・ファッション', '採用・会社紹介・学校PR', 'ストーリー・MV', 'VLOG・SNS動画'];
+  var VIDEO = [
+    [0, 'スキンローション CM', 'SNS広告・ブランドサイト', '水の揺らぎで、肌に広がる透明感を見せる', ''],
+    [0, 'シートマスク CM', 'SNS広告・EC商品ページ', '素材のやわらかさを、手元の寄りで伝える', ''],
+    [0, 'ハンディファン CM', 'SNS広告・EC商品ページ', '目に見えない風を、布の流れで描く', ''],
+    [0, 'ヘッドホン CM', 'SNS広告・Web CM', '街の景色が組み変わる演出で、音の世界観を表す', ''],
+    [0, 'おにぎりのタイポグラフィ広告', 'SNS広告・店頭サイネージ', '食材そのものを文字に見立て、短い尺で印象を残す', ''],
+    [0, '天然水 CM', 'Web CM・SNS広告', '水中と森を行き来し、水源のイメージを描く', ''],
+    [0, '清涼飲料水 CM', 'Web CM・SNS広告', '室内から山頂へ、ロケなしで場面を切り替える', ''],
+    [0, '果実酒 CM', 'SNS広告・Web CM', '果物が弾けるシズル感をスローで見せる', ''],
+    [0, '自動車 CM', 'Web CM・ブランドサイト', '走行シーンと車内の表情を、撮影車両なしで構成', ''],
+    [0, 'オフロード車 CM', 'Web CM・展示会映像', '雪山や荒野など、撮影が難しい環境で走らせる', ''],
+    [0, 'ラゲッジブランド イメージ映像', 'ブランドサイト・SNS広告', '砂漠を旅する世界観を、海外ロケなしで描く', ''],
+    [0, 'スキンケアクリーム CM', 'SNS広告・ブランドサイト', '花と羽根の世界観で、商品の上質さを描く', ''],
+    [0, 'シャンプー CM', 'Web CM・SNS広告', '泡立ちから街でなびく髪まで、仕上がりを見せる', ''],
+    [0, '日焼け止め CM', 'SNS広告・Web CM', '日差しから逃げる人々を、コミカルに描く', ''],
+    [1, 'アパレル ブランドビジュアル', 'SNS広告・ECトップ', '色と文字を重ね、ブランドの勢いを短尺で伝える', ''],
+    [1, 'ファッションショー映像', '新作発表・SNS', '複数のラインを、ランウェイ演出でまとめて紹介', ''],
+    [1, 'ストリートファッション映像', 'SNS広告・店舗サイネージ', '街のカルチャーを、スタイルの違いで見せ分ける', ''],
+    [1, 'ファッションブランド CM', 'SNS広告・新作告知', 'グラフィックと人物を組み合わせたポップな構成', ''],
+    [1, 'スポーツ ブランディングムービー', 'ブランドサイト・イベント上映', '夜の街と競技の熱量を、表情の寄りで描く', ''],
+    [1, '現場で働く人のブランドムービー', '企業ブランディング・展示会', '過酷な現場に立つ人の表情に焦点を当てる', ''],
+    [2, '航空業界の採用動画', '採用サイト・説明会', '整備や空港の仕事を、つながる風景で見せる', ''],
+    [2, '建設会社の企業CM', '採用・企業ブランディング', '測量と現場の手仕事に、短いコピーを重ねる', ''],
+    [2, '美容室の採用動画（前編）', '採用サイト・SNS', 'インタビュー形式で、働く人の声を伝える構成', ''],
+    [2, '美容室の採用動画（後編）', '採用サイト・SNS', '前編と続けて見られる、シリーズの作り方', ''],
+    [2, '学校・学科紹介PR', '学校サイト・オープンキャンパス', '学科ごとの学びの場面を、短くつないで紹介', ''],
+    [3, '猫が主役のショートドラマ', 'SNS・キャラクター展開', '動物を主役にした、続きが見たくなる短編', ''],
+    [3, '時代劇「井戸の茶碗」', 'エンタメ・地域PR', '古典落語の題材を、実写の時代劇として再現', ''],
+    [3, 'ショートフィルム（字幕つき）', 'エンタメ・映像作品', '字幕つきで、海外にも届けやすい物語映像', ''],
+    [3, 'ミュージックビデオ「timeline」', 'MV・音楽プロモーション', 'ライブの熱と光の演出で、曲の展開を追う', ''],
+    [3, 'ミュージックビデオ「gray」', 'MV・音楽プロモーション', '夜の水辺と人物の表情で、曲の空気をつくる', ''],
+    [3, 'Take404 ANIMI5', 'MV・IP展開', '5人組の世界観を、近未来のセットで描く', ''],
+    [3, 'ショートドラマ「OKAGE」', 'SNS・ショートドラマ配信', '日常の何気ない場面から、人のつながりを描く', ''],
+    [3, '夫婦のショートドラマ（縦型）', 'SNS・縦型ショート配信', 'スマホ向けの縦型画面で、夫婦の日常を描く', ''],
+    [4, '梨泰院食べ歩きVLOG', '観光PR・飲食店のSNS', '夜の屋台街の食べ歩きを、海外ロケなしで描く', ''],
+    [4, '電車旅のVLOG', '観光PR・SNS', '車窓の田園と横顔で、ローカル線の旅を描く', ''],
+    [4, '朝のVLOG', '商品PR・SNS', '目覚ましを止める朝から、等身大の一日を描く', ''],
+    [4, '船旅のVLOG', '観光PR・SNS', '船を降りる一歩から、旅の始まりを描く', '']
+  ];
+
+  // マンガ → アニメの事例（ASOBI SYSTEM）。アニメの動画が決まったら youtube に ID を入れる
+  var FEATURE = { manga: 'asobi-recruit', animeTitle: 'ASOBI SYSTEM 様のアニメ', youtube: '' };
+
+  /* ---------- ここから表示 ---------- */
+
+  var YT_ID = /^[A-Za-z0-9_-]{6,20}$/;
+  var FIRST_SHOWN = { video: 12 };
   var lastFocus = null;
 
   function $(sel, root) { return (root || document).querySelector(sel); }
@@ -28,24 +91,9 @@
     return node;
   }
 
-  function safeImage(url) {
-    if (typeof url !== 'string') return '';
-    for (var i = 0; i < IMAGE_HOSTS.length; i++) {
-      if (url.indexOf(IMAGE_HOSTS[i]) === 0 && !/[\s"'<>\\]/.test(url)) return url;
-    }
-    return '';
-  }
-
-  function getJSON(path) {
-    var ctrl = typeof AbortController === 'function' ? new AbortController() : null;
-    var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, TIMEOUT_MS) : null;
-    return fetch(API + path, { credentials: 'omit', signal: ctrl ? ctrl.signal : undefined })
-      .then(function (res) {
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        return res.json();
-      })
-      .finally(function () { if (timer) clearTimeout(timer); });
-  }
+  function pad(n) { return n < 10 ? '0' + n : String(n); }
+  function mangaPage(slug, n) { return 'images/manga/' + slug + '/' + pad(n) + '.webp'; }
+  function findManga(slug) { return MANGA.filter(function (m) { return m.slug === slug; })[0]; }
 
   /* ---------- タブ ---------- */
   function selectTab(name, focus) {
@@ -62,6 +110,10 @@
 
   function initTabs() {
     var tabs = $all('[data-bs-tab]');
+    // 各サービスの章の「制作事例を見る」: 事例の章へ移り、そのサービスのタブを開く
+    $all('[data-bs-tab-link]').forEach(function (link) {
+      link.addEventListener('click', function () { selectTab(link.getAttribute('data-bs-tab-link'), false); });
+    });
     tabs.forEach(function (tab, i) {
       tab.addEventListener('click', function () { selectTab(tab.getAttribute('data-bs-tab'), false); });
       tab.addEventListener('keydown', function (e) {
@@ -74,9 +126,6 @@
         e.preventDefault();
         selectTab(next.getAttribute('data-bs-tab'), true);
       });
-    });
-    $all('[data-bs-tab-link]').forEach(function (link) {
-      link.addEventListener('click', function () { selectTab(link.getAttribute('data-bs-tab-link'), false); });
     });
   }
 
@@ -119,50 +168,49 @@
     });
   }
 
-  function videoFrame(src, title) {
-    var wrap = el('div', 'bs-video');
-    var frame = document.createElement('iframe');
-    frame.src = src;
-    frame.title = title;
-    frame.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen';
-    frame.allowFullscreen = true;
-    frame.referrerPolicy = 'strict-origin-when-cross-origin';
-    wrap.appendChild(frame);
-    return wrap;
+  function videoBody(title, youtube, poster) {
+    if (YT_ID.test(youtube || '')) {
+      var wrap = el('div', 'bs-video');
+      var frame = document.createElement('iframe');
+      frame.src = 'https://www.youtube-nocookie.com/embed/' + youtube + '?autoplay=1&rel=0';
+      frame.title = title;
+      frame.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen';
+      frame.allowFullscreen = true;
+      frame.referrerPolicy = 'strict-origin-when-cross-origin';
+      wrap.appendChild(frame);
+      return wrap;
+    }
+    // 動画がまだ無いもの（枠だけ）
+    var box = el('div', 'bs-video bs-video--pending');
+    if (poster) {
+      var img = document.createElement('img');
+      img.src = poster;
+      img.alt = '';
+      box.appendChild(img);
+    }
+    box.appendChild(el('p', 'bs-placeholder', 'この動画は準備中です'));
+    return box;
   }
 
-  function mangaReader(work) {
+  function mangaReader(m) {
     var wrap = el('div', 'bs-reader');
     var pages = el('div', 'bs-reader__pages');
-    (Array.isArray(work.gallery) ? work.gallery : []).forEach(function (url, i) {
-      var src = safeImage(url);
-      if (!src) return;
+    for (var i = 1; i <= m.pages; i++) {
       var img = document.createElement('img');
-      img.src = src;
-      img.alt = work.title_ja + '（' + (i + 1) + 'ページ目）';
-      img.loading = i < 2 ? 'eager' : 'lazy';
+      img.src = mangaPage(m.slug, i);
+      img.alt = m.title + '（' + i + 'ページ目）';
+      img.loading = i <= 2 ? 'eager' : 'lazy';
       img.decoding = 'async';
+      img.width = 900;
       pages.appendChild(img);
-    });
-    if (!pages.children.length) pages.appendChild(el('p', 'bs-status', 'このマンガのページを読み込めませんでした。'));
-
+    }
     var info = el('div', 'bs-reader__info');
     var dl = document.createElement('dl');
-    [['お客様', work.client], ['用途', work.category], ['ページ数', pages.querySelectorAll('img').length ? pages.querySelectorAll('img').length + 'ページ' : '']]
-      .forEach(function (row) {
-        if (!row[1]) return;
-        dl.appendChild(el('dt', '', row[0]));
-        dl.appendChild(el('dd', '', row[1]));
-      });
+    [['お客様', m.client], ['用途', m.use], ['ページ数', m.pages + 'ページ']].forEach(function (row) {
+      dl.appendChild(el('dt', '', row[0]));
+      dl.appendChild(el('dd', '', row[1]));
+    });
     info.appendChild(dl);
-    if (work.point) info.appendChild(el('p', 'bs-reader__point', work.point));
-    if (MANGA_ID.test(work.id || '')) {
-      var more = el('a', 'bs-reader__more', 'ビズ書庫で見開きで読む →');
-      more.href = '/biz-library?manga=' + encodeURIComponent(work.id);
-      more.target = '_blank';
-      more.rel = 'noopener';
-      info.appendChild(more);
-    }
     wrap.appendChild(pages);
     wrap.appendChild(info);
     return wrap;
@@ -175,10 +223,9 @@
     btn.type = 'button';
     btn.setAttribute('aria-haspopup', 'dialog');
     var thumb = el('span', 'bs-card__thumb');
-    var src = safeImage(opts.image);
-    if (src) {
+    if (opts.image) {
       var img = document.createElement('img');
-      img.src = src;
+      img.src = opts.image;
       img.alt = '';
       img.loading = 'lazy';
       img.decoding = 'async';
@@ -186,16 +233,22 @@
     }
     if (opts.badge) thumb.appendChild(el('span', 'bs-card__badge', opts.badge));
     if (opts.play) thumb.appendChild(el('span', 'bs-card__play'));
+    if (opts.pending) thumb.appendChild(el('span', 'bs-card__pending', '準備中'));
     btn.appendChild(thumb);
-    btn.appendChild(el('span', 'bs-card__title', opts.title));
-    if (opts.meta) btn.appendChild(el('span', 'bs-card__meta', opts.meta));
+    var body = el('span', 'bs-card__body');
+    if (opts.use) body.appendChild(el('span', 'bs-card__use', opts.use));
+    body.appendChild(el('span', 'bs-card__title', opts.title));
+    if (opts.meta) body.appendChild(el('span', 'bs-card__meta', opts.meta));
+    btn.appendChild(body);
     btn.addEventListener('click', opts.onOpen);
     li.appendChild(btn);
     return li;
   }
 
-  /* 商談で一覧が長くなりすぎないよう、最初は FIRST_SHOWN 件だけ出して「もっと見る」で残りを出す */
-  var FIRST_SHOWN = { manga: 10, anime: 8, video: 8 };
+  function setCount(name, n) {
+    var badge = $('[data-bs-count="' + name + '"]');
+    if (badge) badge.textContent = n ? String(n) : '';
+  }
 
   function fillGrid(name, cards) {
     var grid = $('[data-bs-grid="' + name + '"]');
@@ -216,146 +269,94 @@
     };
   }
 
-  function setCount(name, n) {
-    var badge = $('[data-bs-count="' + name + '"]');
-    if (badge) badge.textContent = n ? String(n) : '';
-  }
-
-  function setStatus(name, text, link) {
-    var status = $('[data-bs-status="' + name + '"]');
-    if (!status) return;
-    status.textContent = text || '';
-    if (link) {
-      status.appendChild(document.createTextNode(' '));
-      var a = el('a', '', link.label);
-      a.href = link.href;
-      a.target = '_blank';
-      a.rel = 'noopener';
-      status.appendChild(a);
-    }
-  }
-
-  /* ---------- マンガ ---------- */
-  function renderManga(works) {
-    var list = (Array.isArray(works) ? works : []).filter(function (w) {
-      return w && w.show_library !== false && typeof w.title_ja === 'string' && w.title_ja;
-    });
-    setCount('manga', list.length);
-    if (!list.length) {
-      setStatus('manga', '表示できるマンガの事例がありません。', { label: '制作事例のページを見る', href: '/works' });
-      return;
-    }
-    setStatus('manga', '');
-
-    var cats = [];
-    list.forEach(function (w) { if (w.category && cats.indexOf(w.category) < 0) cats.push(w.category); });
-
-    function draw(cat) {
-      fillGrid('manga', list.filter(function (w) { return !cat || w.category === cat; }).map(function (w) {
-        return card({
-          image: w.thumbnail,
-          badge: w.category,
-          title: w.title_ja,
-          meta: w.client,
-          onOpen: function () { openModal(w.title_ja, mangaReader(w)); }
-        });
-      }));
-    }
-
-    var filter = $('[data-bs-filter="manga"]');
-    if (cats.length > 1) {
-      [''].concat(cats).forEach(function (cat) {
-        var b = el('button', '', cat || 'すべて');
-        b.type = 'button';
-        b.setAttribute('aria-pressed', cat === '' ? 'true' : 'false');
-        b.addEventListener('click', function () {
-          $all('button', filter).forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
-          draw(cat);
-        });
-        filter.appendChild(b);
-      });
-      filter.hidden = false;
-    }
-    draw('');
-  }
-
-  /* ---------- アニメ・ビデオ ---------- */
-  function videoItem(v, type) {
-    if (!v || typeof v.title !== 'string' || !v.title) return null;
-    if (v.provider === 'youtube' && YT_ID.test(v.video_id || '')) {
-      return {
-        key: 'v:' + v.video_id,
-        title: v.title,
-        image: v.poster || ('https://i.ytimg.com/vi/' + v.video_id + '/hqdefault.jpg'),
-        badge: ANIME_LABEL[v.category] || (type === 'bizvideo' ? '映像' : ''),
-        src: 'https://www.youtube-nocookie.com/embed/' + v.video_id + '?autoplay=1&rel=0'
-      };
-    }
-    if (YT_LIST.test(v.playlist_id || '')) {
-      return {
-        key: 'p:' + v.playlist_id,
-        title: v.title,
-        image: v.poster,
-        badge: '再生リスト',
-        src: 'https://www.youtube-nocookie.com/embed/videoseries?list=' + v.playlist_id + '&rel=0'
-      };
-    }
-    return null; // YouTube 以外（mp4・Drive）はこの LP では扱わない
-  }
-
-  function renderVideos(name, items, fallback) {
-    var seen = {};
-    var list = items.filter(function (x) {
-      if (!x || seen[x.key]) return false;
-      seen[x.key] = true;
-      return true;
-    });
-    setCount(name, list.length);
-    if (!list.length) {
-      setStatus(name, '表示できる動画の事例がありません。', fallback);
-      return;
-    }
-    setStatus(name, '');
-    fillGrid(name, list.map(function (x) {
+  function renderManga() {
+    setCount('manga', MANGA.length);
+    fillGrid('manga', MANGA.map(function (m) {
       return card({
-        image: x.image,
-        badge: x.badge,
-        title: x.title,
-        play: true,
-        onOpen: function () { openModal(x.title, videoFrame(x.src, x.title)); }
+        image: mangaPage(m.slug, 1),
+        use: m.use + ' / ' + m.pages + 'P',
+        title: m.title,
+        meta: 'クライアント: ' + m.client,
+        onOpen: function () { openModal(m.title, mangaReader(m)); }
       });
     }));
   }
 
-  function byType(arr, type) {
-    return (Array.isArray(arr) ? arr : []).filter(function (x) { return x && x.type === type; });
+  function renderAnime() {
+    var list = ANIME.filter(function (a) { return YT_ID.test(a.youtube); });
+    setCount('anime', list.length);
+    fillGrid('anime', list.map(function (a) {
+      return card({
+        image: 'https://i.ytimg.com/vi/' + a.youtube + '/hqdefault.jpg',
+        badge: a.label,
+        title: a.title,
+        play: true,
+        onOpen: function () { openModal(a.title, videoBody(a.title, a.youtube, '')); }
+      });
+    }));
   }
 
-  function load() {
-    var animeLink = { label: 'ビズアニメのページを見る', href: '/bizanime' };
-
-    getJSON('/works?site=bizmanga').then(renderManga).catch(function () {
-      setStatus('manga', '事例を読み込めませんでした。', { label: '制作事例のページを見る', href: '/works' });
+  function renderVideo() {
+    var items = VIDEO.map(function (v, i) {
+      return { genre: v[0], title: v[1], use: v[2], text: v[3], youtube: v[4], image: 'images/video/v' + pad(i + 1) + '.webp' };
     });
+    setCount('video', items.length);
 
-    getJSON('/bizanime-videos').then(function (data) {
-      data = data || {};
-      var anime = byType(data.viewer, 'bizanime').concat(Array.isArray(data.cases) ? data.cases : [], byType(data.playlists, 'bizanime'))
-        .map(function (v) { return videoItem(v, 'bizanime'); });
-      var video = byType(data.viewer, 'bizvideo').concat(byType(data.playlists, 'bizvideo'))
-        .map(function (v) { return videoItem(v, 'bizvideo'); });
-      renderVideos('anime', anime, animeLink);
-      renderVideos('video', video, null);
-    }).catch(function () {
-      setStatus('anime', '事例を読み込めませんでした。', animeLink);
-      setStatus('video', '事例を読み込めませんでした。', null);
+    function draw(genre) {
+      fillGrid('video', items.filter(function (x) { return genre < 0 || x.genre === genre; }).map(function (x) {
+        return card({
+          image: x.image,
+          title: x.title,
+          use: x.use,
+          meta: x.text,
+          pending: !YT_ID.test(x.youtube),
+          onOpen: function () { openModal(x.title, videoBody(x.title, x.youtube, '')); }
+        });
+      }));
+    }
+
+    var filter = $('[data-bs-filter="video"]');
+    [-1].concat(VIDEO_GENRES.map(function (_, i) { return i; })).forEach(function (g) {
+      var b = el('button', '', g < 0 ? 'すべて' : VIDEO_GENRES[g]);
+      b.type = 'button';
+      b.setAttribute('aria-pressed', g < 0 ? 'true' : 'false');
+      b.addEventListener('click', function () {
+        $all('button', filter).forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+        draw(g);
+      });
+      filter.appendChild(b);
     });
+    filter.hidden = false;
+    draw(-1);
+  }
+
+  function initFeature() {
+    var m = findManga(FEATURE.manga);
+    var mangaBtn = $('[data-bs-feature="manga"]');
+    var animeBtn = $('[data-bs-feature="anime"]');
+    if (m && mangaBtn) mangaBtn.addEventListener('click', function () { openModal(m.title, mangaReader(m)); });
+    if (animeBtn) {
+      if (YT_ID.test(FEATURE.youtube)) {
+        animeBtn.textContent = '';
+        var img = document.createElement('img');
+        img.src = 'https://i.ytimg.com/vi/' + FEATURE.youtube + '/hqdefault.jpg';
+        img.alt = '';
+        animeBtn.appendChild(img);
+        animeBtn.appendChild(el('span', 'bs-card__play'));
+      }
+      animeBtn.addEventListener('click', function () {
+        openModal(FEATURE.animeTitle, videoBody(FEATURE.animeTitle, FEATURE.youtube, ''));
+      });
+    }
   }
 
   function init() {
     initTabs();
     initModal();
-    load();
+    renderManga();
+    renderAnime();
+    renderVideo();
+    initFeature();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
