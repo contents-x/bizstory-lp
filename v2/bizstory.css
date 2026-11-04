@@ -1,0 +1,565 @@
+/* ビズストーリー LP（他社の社長あてのメールに載せるLP）
+   見た目はビズマンガの用途別LP（josawa2255/bizmanga の css/bm-lp-v2.css「MANGA MAGAZINE × BRAND SITE」）に合わせる:
+   黒い太枠＋ずらした影のコマ割りパネル、明朝体の見出し＋オレンジ文字と黄色のマーカー、生成り色の面、黒い帯、フチ文字の番号。
+   色・太さの値は bm-lp-v2.css の :root（--lpv2-*）と同じ。このページだけで使うので、すべて .bs-page の中に閉じる。 */
+
+.bs-page {
+  --bs-paper: #ffffff;
+  --bs-cream: #fff8ed;
+  --bs-cream-deep: #f5ecd9;
+  --bs-ink: #0a0a0a;
+  --bs-ink-soft: #2a2520;
+  --bs-ink-mute: #6a6258;
+  --bs-rule-soft: #e4dbc6;
+  --bs-accent: #e85500;
+  --bs-accent-deep: #b94100;
+  --bs-accent-soft: rgba(232, 85, 0, 0.12);
+  --bs-yellow: #ffd54a;
+  --bs-font-display: "Noto Serif JP", "Hiragino Mincho ProN", serif;
+  --bs-font-sans: "Noto Sans JP", "Hiragino Kaku Gothic ProN", sans-serif;
+  --bs-font-mono: "Public Sans", "Noto Sans JP", sans-serif;
+  --bs-shadow-panel: 8px 8px 0 var(--bs-ink);
+  --bs-shadow-panel-sm: 5px 5px 0 var(--bs-ink);
+  --bs-border-w: 3px;
+  --bs-header-h: 68px;
+
+  margin: 0;
+  background: var(--bs-paper);
+  color: var(--bs-ink);
+  font-family: var(--bs-font-sans);
+  font-size: 16px;
+  line-height: 1.9;
+  letter-spacing: 0.02em;
+  -webkit-text-size-adjust: 100%;
+}
+.bs-page *, .bs-page *::before, .bs-page *::after { box-sizing: border-box; }
+.bs-page img { max-width: 100%; height: auto; display: block; }
+.bs-page a { color: inherit; }
+.bs-page :where(h1, h2, h3, p, ul, ol, figure, dl) { margin: 0; }
+.bs-page :where(ul, ol) { padding: 0; list-style: none; }
+.bs-page :focus-visible { outline: 3px solid var(--bs-accent); outline-offset: 3px; }
+.bs-page [hidden] { display: none !important; }
+html:has(.bs-page) { scroll-behavior: smooth; scroll-padding-top: calc(var(--bs-header-h, 68px) + 12px); }
+
+.bs-skip { position: absolute; left: -9999px; top: 0; }
+.bs-skip:focus { left: 12px; top: 12px; z-index: 100; background: #fff; padding: 8px 16px; }
+
+.bs-container { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+.bs-br-pc { display: initial; }
+
+/* ---------- 文字 ---------- */
+.bs-eyebrow {
+  display: inline-flex; align-items: center; gap: 14px;
+  font-family: var(--bs-font-mono); font-size: 12px; font-weight: 900;
+  letter-spacing: 0.32em; text-transform: uppercase; color: var(--bs-accent);
+  margin: 0 0 20px;
+}
+.bs-eyebrow::before { content: ""; width: 40px; height: 2px; background: var(--bs-accent); display: inline-block; }
+.bs-h2, .bs-h3, .bs-hero__title, .bs-bridge__statement, .bs-end__title { word-break: auto-phrase; text-wrap: balance; }
+.bs-h2 {
+  font-family: var(--bs-font-display); font-size: clamp(30px, 4.6vw, 52px); font-weight: 900;
+  line-height: 1.35; letter-spacing: 0.02em; margin: 0 0 24px;
+}
+.bs-h2 em, .bs-h3 em, .bs-hero__title em {
+  font-style: normal; color: var(--bs-accent);
+  background-image: linear-gradient(to top, var(--bs-yellow) 0%, var(--bs-yellow) 28%, transparent 28%);
+  padding: 0 4px;
+}
+.bs-h3 {
+  font-family: var(--bs-font-display); font-size: clamp(19px, 2vw, 23px); font-weight: 900;
+  line-height: 1.5; letter-spacing: 0.02em; margin: 0 0 12px;
+}
+.bs-lead { font-size: clamp(15px, 1.4vw, 17px); line-height: 2; color: var(--bs-ink-soft); letter-spacing: 0.04em; }
+
+/* 章の見出し（裏にクリーム色のもや） */
+.bs-head { text-align: center; margin: 0 auto 64px; max-width: 840px; position: relative; isolation: isolate; }
+.bs-head::before {
+  content: ""; position: absolute; inset: -40px -30px; z-index: -1; pointer-events: none; filter: blur(14px);
+  background:
+    radial-gradient(ellipse 60% 70% at 50% 40%, rgba(255, 213, 74, 0.28) 0%, transparent 70%),
+    radial-gradient(ellipse 85% 75% at 50% 50%, rgba(255, 248, 237, 1) 0%, rgba(255, 248, 237, 0.65) 55%, transparent 100%);
+}
+.bs-head .bs-eyebrow { justify-content: center; }
+.bs-head .bs-eyebrow::before { display: none; }
+
+/* ---------- ボタン（太枠＋ずらした影） ---------- */
+.bs-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 48px; padding: 16px 30px;
+  font-family: var(--bs-font-sans); font-size: 15px; font-weight: 900; letter-spacing: 0.08em; line-height: 1.4;
+  text-decoration: none; text-align: center; cursor: pointer;
+  border: var(--bs-border-w) solid var(--bs-ink); background: var(--bs-accent); color: #fff !important;
+  box-shadow: var(--bs-shadow-panel-sm);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease;
+}
+.bs-btn:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--bs-ink); }
+.bs-btn:active { transform: translate(0, 0); box-shadow: 2px 2px 0 var(--bs-ink); }
+.bs-btn--ghost { background: #fff; color: var(--bs-ink) !important; }
+.bs-btn--ghost:hover { background: var(--bs-ink); color: #fff !important; }
+.bs-btn--sm { min-height: 44px; padding: 8px 18px; font-size: 13px; box-shadow: 3px 3px 0 var(--bs-ink); }
+.bs-btn--sm:hover { box-shadow: 5px 5px 0 var(--bs-ink); }
+.bs-btn--lg { padding: 22px 44px; font-size: 16px; }
+.bs-btn--on-dark { border-color: #fff; box-shadow: 6px 6px 0 var(--bs-yellow); }
+.bs-btn--on-dark:hover { box-shadow: 9px 9px 0 var(--bs-yellow); }
+
+/* ---------- ヘッダー ---------- */
+.bs-header {
+  position: sticky; top: 0; z-index: 50; height: var(--bs-header-h);
+  background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(8px);
+  border-bottom: var(--bs-border-w) solid var(--bs-ink);
+}
+.bs-header__inner { height: 100%; max-width: 1280px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; gap: 24px; }
+.bs-logo { display: inline-flex; align-items: baseline; gap: 10px; text-decoration: none; color: var(--bs-ink) !important; }
+.bs-logo__en { font-family: var(--bs-font-mono); font-weight: 900; font-size: 24px; letter-spacing: -0.01em; }
+.bs-logo__en::first-letter { color: var(--bs-accent); }
+.bs-logo__ja { font-size: 12px; font-weight: 700; color: var(--bs-ink-mute); }
+.bs-nav { display: flex; gap: 2px; margin-left: auto; }
+.bs-nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; font-size: 14px; font-weight: 700; text-decoration: none; }
+.bs-nav a:hover { color: var(--bs-accent); }
+
+/* ---------- HERO ---------- */
+.bs-hero {
+  position: relative; overflow: hidden; background: var(--bs-cream);
+  border-bottom: var(--bs-border-w) solid var(--bs-ink);
+}
+.bs-hero::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.5;
+  background-image: radial-gradient(rgba(232, 85, 0, 0.22) 1px, transparent 1.4px); background-size: 8px 8px;
+  -webkit-mask-image: linear-gradient(100deg, transparent 35%, #000 100%); mask-image: linear-gradient(100deg, transparent 35%, #000 100%);
+}
+.bs-hero__inner {
+  position: relative; max-width: 1280px; margin: 0 auto; padding: 72px 32px 88px;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); align-items: center; gap: 56px;
+}
+.bs-hero__tag {
+  display: inline-block; margin-bottom: 20px; padding: 6px 14px;
+  background: var(--bs-ink); color: #fff; font-size: 13px; font-weight: 900; letter-spacing: 0.1em;
+}
+.bs-hero__copy .bs-eyebrow { display: flex; }
+.bs-hero__title {
+  font-family: var(--bs-font-display); font-size: clamp(36px, 4.8vw, 64px); font-weight: 900;
+  line-height: 1.3; letter-spacing: 0.02em;
+}
+.bs-hero__lead { margin-top: 28px; font-size: clamp(15px, 1.3vw, 17px); line-height: 2; color: var(--bs-ink-soft); max-width: 34em; }
+.bs-hero__actions { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 36px; }
+.bs-hero__visual { position: relative; }
+.bs-hero__visual img {
+  width: 100%; aspect-ratio: 3 / 2; object-fit: cover;
+  border: var(--bs-border-w) solid var(--bs-ink); box-shadow: var(--bs-shadow-panel); background: #fff;
+}
+
+/* ---------- 章 ---------- */
+.bs-section { padding: 120px 0; position: relative; overflow-x: clip; }
+.bs-section--cream { background: var(--bs-cream); }
+
+/* コマ割りパネル（なぜマンガとアニメなのか） */
+.bs-panels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+.bs-panel-card {
+  position: relative; background: #fff; border: var(--bs-border-w) solid var(--bs-ink);
+  box-shadow: var(--bs-shadow-panel); padding: 100px 28px 30px; min-height: 196px;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+.bs-panel-card:hover { transform: translate(-3px, -3px); box-shadow: 11px 11px 0 var(--bs-ink); }
+.bs-panel-card__num {
+  position: absolute; top: 28px; left: 28px; width: 56px; height: 56px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--bs-font-display); font-weight: 900; font-size: 26px; color: #fff; background: var(--bs-ink);
+}
+.bs-panel-card p { font-size: 15px; line-height: 2; color: var(--bs-ink-soft); }
+
+/* 黒い帯 */
+.bs-bridge { position: relative; background: var(--bs-ink); color: #fff; padding: 120px 0; overflow: hidden; text-align: center; }
+.bs-bridge::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.55;
+  background-image: radial-gradient(rgba(232, 85, 0, 0.4) 1px, transparent 1.5px); background-size: 8px 8px;
+}
+.bs-bridge::after { content: ""; position: absolute; inset: 24px; border: 1px solid rgba(255, 255, 255, 0.18); pointer-events: none; }
+.bs-bridge__inner { position: relative; z-index: 1; max-width: 920px; margin: 0 auto; padding: 0 32px; }
+.bs-bridge__eyebrow { font-family: var(--bs-font-mono); font-size: 12px; font-weight: 900; letter-spacing: 0.42em; color: var(--bs-yellow); margin-bottom: 28px; }
+.bs-bridge__statement { font-family: var(--bs-font-display); font-weight: 900; font-size: clamp(26px, 4.4vw, 50px); line-height: 1.6; letter-spacing: 0.04em; }
+.bs-bridge__statement em { font-style: normal; color: var(--bs-accent); position: relative; display: inline-block; }
+.bs-bridge__statement em::before {
+  content: ""; position: absolute; inset: -4px -8px; border: 2px solid var(--bs-accent); transform: rotate(-1deg); pointer-events: none;
+}
+
+/* 得られること（画像つきパネル） */
+.bs-merits { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px; }
+.bs-merit {
+  display: flex; flex-direction: column; background: #fff; overflow: hidden;
+  border: var(--bs-border-w) solid var(--bs-ink); box-shadow: var(--bs-shadow-panel);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+.bs-merit:hover { transform: translate(-3px, -3px); box-shadow: 11px 11px 0 var(--bs-ink); }
+.bs-merit__img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; object-position: center 22%; border-bottom: var(--bs-border-w) solid var(--bs-ink); background: var(--bs-cream-deep); }
+.bs-merit__body { padding: 28px 28px 32px; }
+.bs-merit__label {
+  display: inline-block; margin-bottom: 14px; padding: 3px 12px;
+  font-family: var(--bs-font-sans); font-size: 13px; font-weight: 900; letter-spacing: 0.08em;
+  color: #fff; background: var(--bs-accent);
+}
+.bs-merit p:last-child { font-size: 15px; line-height: 2; color: var(--bs-ink-soft); }
+
+/* マンガからアニメへ（3つの段階） */
+.bs-step__num, .bs-flow__num {
+  display: block; font-family: var(--bs-font-display); font-weight: 900; font-size: 48px; line-height: 0.95;
+  color: var(--bs-accent-soft); -webkit-text-stroke: 1.5px var(--bs-accent); letter-spacing: -0.04em; margin-bottom: 10px;
+}
+.bs-step__name, .bs-flow__name { font-family: var(--bs-font-display); font-weight: 900; font-size: 17px; line-height: 1.5; margin-bottom: 8px; }
+.bs-step__desc, .bs-flow__desc { font-size: 14px; line-height: 1.9; color: var(--bs-ink-soft); }
+
+/* 段階を踏むもの（マンガからアニメへ・制作の流れ）: パネル → 矢印 → パネル で、進んでいることを見せる */
+.bs-steps, .bs-flow { position: relative; display: grid; gap: 72px; }
+.bs-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.bs-flow { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.bs-step, .bs-flow__step {
+  position: relative; z-index: 1; background: #fff; padding: 26px 24px 28px;
+  border: var(--bs-border-w) solid var(--bs-ink); box-shadow: var(--bs-shadow-panel-sm);
+}
+.bs-flow__step { min-height: 210px; }
+.bs-step:not(:last-child)::after, .bs-flow__step:not(:last-child)::after {
+  content: ""; position: absolute; top: 50%; right: -55px; z-index: 2; width: 34px; height: 34px;
+  background: var(--bs-accent); border: var(--bs-border-w) solid var(--bs-ink);
+  clip-path: polygon(0 18%, 52% 18%, 52% 0, 100% 50%, 52% 100%, 52% 82%, 0 82%);
+  transform: translateY(-50%);
+}
+/* 矢印の黒い縁（clip-path では枠線が切れるので、少し大きい黒い矢印を後ろに重ねる） */
+.bs-step:not(:last-child)::before, .bs-flow__step:not(:last-child)::before {
+  content: ""; position: absolute; top: 50%; right: -58px; z-index: 2; width: 40px; height: 40px; background: var(--bs-ink);
+  clip-path: polygon(0 14%, 52% 14%, 52% 0, 100% 50%, 52% 100%, 52% 86%, 0 86%);
+  transform: translateY(-50%);
+}
+.bs-step__num, .bs-flow__num { position: relative; }
+.bs-step__num::before, .bs-flow__num::before {
+  content: "STEP"; display: block; margin-bottom: 6px;
+  font-family: var(--bs-font-mono); font-size: 11px; font-weight: 900; letter-spacing: 0.3em; line-height: 1; color: var(--bs-ink); -webkit-text-stroke: 0;
+}
+.bs-step__num, .bs-flow__num { display: inline-block; }
+.bs-feature__arrow {
+  justify-self: center; width: 40px; height: 40px; background: var(--bs-accent);
+  clip-path: polygon(0 18%, 52% 18%, 52% 0, 100% 50%, 52% 100%, 52% 82%, 0 82%);
+}
+
+/* ASOBI SYSTEM の事例 */
+.bs-feature {
+  margin-top: 56px; background: #fff; border: var(--bs-border-w) solid var(--bs-ink); box-shadow: var(--bs-shadow-panel);
+  padding: 36px;
+}
+.bs-feature__label { font-family: var(--bs-font-mono); font-size: 12px; font-weight: 900; letter-spacing: 0.32em; color: var(--bs-accent); margin-bottom: 8px; }
+.bs-feature__head { padding-bottom: 20px; border-bottom: 2px dashed var(--bs-rule-soft); }
+.bs-feature__text { font-size: 15px; color: var(--bs-ink-soft); }
+.bs-feature__body { display: grid; grid-template-columns: minmax(0, 0.8fr) 48px minmax(0, 1.6fr); align-items: center; gap: 20px; margin-top: 24px; }
+.bs-feature__slot-label { display: flex; align-items: baseline; gap: 10px; font-size: 14px; font-weight: 900; margin-bottom: 10px; }
+.bs-feature__slot-label span { font-family: var(--bs-font-mono); font-size: 12px; letter-spacing: 0.24em; color: var(--bs-accent); }
+.bs-feature__media {
+  appearance: none; cursor: pointer; font: inherit; width: 100%; padding: 0;
+  position: relative; display: grid; place-items: center; overflow: hidden; background: var(--bs-cream-deep);
+  border: var(--bs-border-w) solid var(--bs-ink); box-shadow: var(--bs-shadow-panel-sm);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.bs-feature__media:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--bs-ink); }
+.bs-feature__media img { width: 100%; height: 100%; object-fit: cover; }
+.bs-feature__media--manga { aspect-ratio: 4 / 5; }
+.bs-feature__media--anime {
+  aspect-ratio: 16 / 9; background-color: var(--bs-ink); color: #fff;
+  background-image: radial-gradient(rgba(232, 85, 0, 0.45) 1px, transparent 1.5px); background-size: 8px 8px;
+}
+.bs-feature__media--anime .bs-placeholder { color: #fff; }
+.bs-feature__hint {
+  position: absolute; right: 0; bottom: 0; padding: 6px 14px; font-size: 13px; font-weight: 900;
+  background: var(--bs-accent); color: #fff; border-top: var(--bs-border-w) solid var(--bs-ink); border-left: var(--bs-border-w) solid var(--bs-ink);
+}
+.bs-placeholder { font-size: 15px; font-weight: 900; letter-spacing: 0.06em; color: var(--bs-ink-mute); text-align: center; padding: 0 16px; }
+
+/* 3つのサービス（カード全体が各サービスの章へのリンク） */
+.bs-services { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+.bs-svc {
+  display: flex; flex-direction: column; background: #fff; text-decoration: none; color: var(--bs-ink) !important;
+  border: var(--bs-border-w) solid var(--bs-ink); box-shadow: var(--bs-shadow-panel);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+.bs-svc:hover, .bs-svc:focus-visible { transform: translate(-3px, -3px); box-shadow: 11px 11px 0 var(--bs-ink); }
+.bs-svc span { display: block; }
+.bs-svc__img { position: relative; border-bottom: var(--bs-border-w) solid var(--bs-ink); overflow: hidden; }
+.bs-svc__img img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.bs-svc .bs-svc__no {
+  position: absolute; top: 14px; left: 14px; width: 52px; height: 52px; display: flex; align-items: center; justify-content: center;
+  font-family: var(--bs-font-display); font-weight: 900; font-size: 24px; color: #fff; background: var(--bs-ink); border: 2px solid #fff;
+}
+.bs-svc__body { padding: 22px 24px 24px; display: flex !important; flex-direction: column; flex: 1; }
+.bs-svc__label { font-family: var(--bs-font-mono); font-size: 12px; font-weight: 900; letter-spacing: 0.28em; color: var(--bs-accent); }
+.bs-svc__name { font-family: var(--bs-font-display); font-weight: 900; font-size: clamp(22px, 2.2vw, 26px); line-height: 1.4; margin: 4px 0 8px; }
+.bs-svc__copy { font-family: var(--bs-font-display); font-weight: 900; font-size: 16px; line-height: 1.6; }
+.bs-svc .bs-svc__tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 18px; }
+.bs-svc__tags span { font-size: 12px; font-weight: 700; padding: 2px 10px; border: 1.5px solid var(--bs-ink); background: var(--bs-cream); }
+.bs-svc .bs-svc__more {
+  margin-top: auto; display: flex; align-items: center; justify-content: space-between; min-height: 44px;
+  padding-top: 12px; border-top: 2px solid var(--bs-ink); font-size: 14px; font-weight: 900; color: var(--bs-accent-deep);
+}
+.bs-svc__more::after { content: "↓"; font-family: var(--bs-font-mono); font-size: 18px; transition: transform 0.2s ease; }
+.bs-svc:hover .bs-svc__more::after { transform: translateY(3px); }
+.bs-combo {
+  margin-top: 40px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; padding: 18px 24px;
+  text-decoration: none; color: var(--bs-ink) !important; background: var(--bs-cream);
+  border: var(--bs-border-w) solid var(--bs-ink); box-shadow: var(--bs-shadow-panel-sm);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.bs-combo:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--bs-ink); }
+.bs-combo__label { font-size: 13px; font-weight: 900; padding: 3px 12px; background: var(--bs-accent); color: #fff; }
+.bs-combo__text { font-family: var(--bs-font-display); font-weight: 900; font-size: 17px; flex: 1 1 320px; }
+.bs-combo__more { font-size: 14px; font-weight: 900; color: var(--bs-accent-deep); }
+.bs-combo__more::after { content: " ↓"; }
+
+/* サービスごとの章（右上の札でどのサービスの話かを示す） */
+.bs-svc-head { position: relative; text-align: center; margin: 0 auto 56px; isolation: isolate; }
+.bs-svc-head::before {
+  content: ""; position: absolute; inset: -40px 15%; z-index: -1; pointer-events: none; filter: blur(14px);
+  background: radial-gradient(ellipse 60% 70% at 50% 40%, rgba(255, 213, 74, 0.24) 0%, transparent 70%);
+}
+.bs-svc-head .bs-eyebrow { justify-content: center; }
+.bs-svc-head .bs-eyebrow::before { display: none; }
+.bs-svc-head .bs-lead { max-width: 760px; margin: 0 auto; }
+.bs-svc-tag {
+  position: absolute; top: 0; right: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
+  padding: 10px 16px; background: var(--bs-ink); color: #fff; text-align: left;
+  font-family: var(--bs-font-display); font-weight: 900; font-size: 18px; line-height: 1.3;
+  border: var(--bs-border-w) solid var(--bs-ink); box-shadow: 5px 5px 0 var(--bs-accent);
+}
+.bs-svc-tag span { font-family: var(--bs-font-mono); font-size: 11px; letter-spacing: 0.24em; color: var(--bs-yellow); }
+.bs-svc-section .bs-merits { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+.bs-svc-foot { margin-top: 48px; text-align: center; }
+.bs-svc-section .bs-note { text-align: center; margin-top: 24px; }
+
+/* 黒地の章（ビズアニメ。ビズアニメのページの黒地に寄せる） */
+.bs-section--ink { background: var(--bs-ink); color: #fff; }
+.bs-section--ink::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.35;
+  background-image: radial-gradient(rgba(255, 213, 74, 0.35) 1px, transparent 1.5px); background-size: 8px 8px;
+}
+.bs-section--ink .bs-container { position: relative; }
+.bs-section--ink .bs-svc-head::before { display: none; }
+.bs-section--ink .bs-lead { color: rgba(255, 255, 255, 0.85); }
+.bs-section--ink .bs-eyebrow { color: var(--bs-yellow); }
+.bs-section--ink .bs-svc-tag { background: var(--bs-yellow); color: var(--bs-ink); border-color: #fff; box-shadow: 5px 5px 0 var(--bs-accent); }
+.bs-section--ink .bs-svc-tag span { color: var(--bs-accent-deep); }
+.bs-section--ink .bs-merit__img { object-position: center; }
+.bs-section--ink .bs-merit { color: var(--bs-ink); border-color: #fff; box-shadow: 8px 8px 0 var(--bs-yellow); }
+.bs-section--ink .bs-merit:hover { box-shadow: 11px 11px 0 var(--bs-yellow); }
+
+/* ---------- サービスの章の中の小見出し（導入事例・制作事例） ---------- */
+.bs-sub { margin-top: 104px; scroll-margin-top: calc(var(--bs-header-h) + 12px); }
+.bs-sub__head { text-align: center; max-width: 760px; margin: 0 auto 48px; }
+.bs-sub__head .bs-eyebrow { justify-content: center; margin-bottom: 14px; }
+.bs-sub__head .bs-eyebrow::before { display: none; }
+.bs-sub__head .bs-lead { word-break: auto-phrase; text-wrap: balance; }
+.bs-sub__title {
+  font-family: var(--bs-font-display); font-size: clamp(24px, 3.2vw, 36px); font-weight: 900;
+  line-height: 1.4; letter-spacing: 0.02em; margin-bottom: 14px; word-break: auto-phrase; text-wrap: balance;
+}
+.bs-sub__title em {
+  font-style: normal; color: var(--bs-accent); padding: 0 4px;
+  background-image: linear-gradient(to top, var(--bs-yellow) 0%, var(--bs-yellow) 28%, transparent 28%);
+}
+.bs-section--ink .bs-sub__title em { background-image: linear-gradient(to top, rgba(255, 213, 74, 0.45) 0%, rgba(255, 213, 74, 0.45) 28%, transparent 28%); }
+
+/* 導入事例（左にマンガ、右に 業種・課題・導入・成果・なぜ効いたか） */
+.bs-cases { display: grid; gap: 40px; }
+.bs-case {
+  display: grid; grid-template-columns: minmax(0, 0.42fr) minmax(0, 1fr); gap: 32px; align-items: start;
+  background: #fff; padding: 28px; border: var(--bs-border-w) solid var(--bs-ink); box-shadow: var(--bs-shadow-panel);
+}
+.bs-case__media {
+  appearance: none; cursor: pointer; font: inherit; padding: 0; width: 100%; position: relative; display: block; overflow: hidden;
+  aspect-ratio: 4 / 5; background: var(--bs-cream-deep);
+  border: var(--bs-border-w) solid var(--bs-ink); box-shadow: var(--bs-shadow-panel-sm);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.bs-case__media:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--bs-ink); }
+.bs-case__media img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+.bs-case__hint {
+  position: absolute; right: 0; bottom: 0; padding: 6px 14px; font-size: 13px; font-weight: 900;
+  background: var(--bs-accent); color: #fff; border-top: var(--bs-border-w) solid var(--bs-ink); border-left: var(--bs-border-w) solid var(--bs-ink);
+}
+.bs-case__title {
+  margin: 0 0 18px; padding-left: 14px; border-left: 6px solid var(--bs-accent);
+  font-family: var(--bs-font-display); font-size: clamp(19px, 2vw, 24px); font-weight: 900; line-height: 1.5;
+  word-break: auto-phrase; text-wrap: balance;
+}
+.bs-case__title > span:first-child {
+  display: block; margin-bottom: 4px; font-family: var(--bs-font-sans); font-size: 13px; letter-spacing: 0.08em; color: var(--bs-accent-deep);
+}
+.bs-case__rows { display: grid; gap: 8px; }
+.bs-case__rows div { display: grid; grid-template-columns: 7.5em minmax(0, 1fr); gap: 16px; align-items: center; padding-bottom: 8px; border-bottom: 1px solid var(--bs-rule-soft); }
+.bs-case__rows dt {
+  align-self: stretch; display: flex; align-items: center; justify-content: center; padding: 6px 8px;
+  font-size: 13px; font-weight: 900; text-align: center; background: var(--bs-cream); border: 2px solid var(--bs-ink);
+}
+.bs-case__rows dd { margin: 0; font-size: 15px; line-height: 1.8; color: var(--bs-ink-soft); }
+.bs-case__result { background: var(--bs-accent-soft); border-bottom: 0 !important; padding: 8px 8px 8px 0; }
+.bs-case__result dt { background: var(--bs-accent); color: #fff; border-color: var(--bs-ink); }
+.bs-case__result dd { font-family: var(--bs-font-display); font-size: 17px; font-weight: 900; color: var(--bs-accent-deep); }
+.bs-case__why { border-bottom: 0 !important; }
+.bs-case__why dt { background: var(--bs-yellow); }
+.bs-cases__cta { margin-top: 40px; text-align: center; font-family: var(--bs-font-display); font-size: clamp(16px, 1.6vw, 19px); font-weight: 900; }
+/* まだ中身が決まっていない所（先方に確かめてから差し替える） */
+.bs-tbd { color: var(--bs-ink-mute) !important; background: repeating-linear-gradient(-45deg, transparent 0 6px, rgba(10, 10, 10, 0.04) 6px 12px); outline: 1.5px dashed var(--bs-ink-mute); outline-offset: 2px; }
+
+/* ---------- 制作事例の一覧 ---------- */
+.bs-filter { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 32px; }
+.bs-filter button {
+  appearance: none; cursor: pointer; font: inherit; font-size: 14px; font-weight: 700;
+  min-height: 44px; padding: 0 16px; background: #fff; color: var(--bs-ink); border: 2px solid var(--bs-ink);
+}
+.bs-filter button[aria-pressed="true"] { background: var(--bs-accent); border-color: var(--bs-ink); color: #fff; }
+.bs-grid { display: grid; gap: 32px 28px; }
+.bs-grid--manga { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.bs-grid--video { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.bs-grid--wide { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.bs-card {
+  appearance: none; cursor: pointer; text-align: left; font: inherit; color: inherit; padding: 0; width: 100%; height: 100%;
+  display: flex; flex-direction: column; background: #fff;
+  border: var(--bs-border-w) solid var(--bs-ink); box-shadow: var(--bs-shadow-panel);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+.bs-card:hover, .bs-card:focus-visible { transform: translate(-3px, -3px); box-shadow: 11px 11px 0 var(--bs-ink); }
+.bs-card__thumb { position: relative; display: block; overflow: hidden; background: var(--bs-cream-deep); border-bottom: var(--bs-border-w) solid var(--bs-ink); }
+.bs-grid--manga .bs-card__thumb { aspect-ratio: 4 / 3; }
+.bs-grid--video .bs-card__thumb { aspect-ratio: 16 / 9; }
+.bs-grid--wide .bs-card__thumb { aspect-ratio: 640 / 252; }
+.bs-card__thumb img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+.bs-card__body { display: flex; flex-direction: column; gap: 6px; padding: 16px 18px 20px; }
+.bs-card__use { font-family: var(--bs-font-mono); font-size: 12px; font-weight: 900; letter-spacing: 0.08em; color: var(--bs-accent); }
+.bs-card__title { font-family: var(--bs-font-display); font-weight: 900; font-size: 17px; line-height: 1.5; }
+.bs-card__meta { font-size: 13px; line-height: 1.7; color: var(--bs-ink-mute); }
+.bs-card__badge { position: absolute; left: 0; top: 0; padding: 4px 12px; font-size: 12px; font-weight: 900; background: var(--bs-ink); color: #fff; }
+.bs-card__play {
+  position: absolute; inset: 0; margin: auto; width: 60px; height: 60px; border-radius: 50%;
+  background: var(--bs-accent); border: var(--bs-border-w) solid #fff; display: grid; place-items: center;
+}
+.bs-card__play::before { content: ""; margin-left: 5px; border-style: solid; border-width: 10px 0 10px 16px; border-color: transparent transparent transparent #fff; }
+.bs-card__pending { position: absolute; right: 0; bottom: 0; padding: 3px 12px; font-size: 12px; font-weight: 900; background: var(--bs-ink); color: #fff; }
+.bs-more { margin-top: 44px; text-align: center; }
+.bs-note { margin-top: 36px; font-size: 13px; line-height: 1.9; color: var(--bs-ink-mute); }
+.bs-svc-section .bs-note--left { text-align: left; }
+.bs-section--ink .bs-card { border-color: #fff; box-shadow: 8px 8px 0 var(--bs-yellow); color: var(--bs-ink); }
+.bs-section--ink .bs-card:hover { box-shadow: 11px 11px 0 var(--bs-yellow); }
+
+/* ---------- 制作の流れ（4コマの表） ---------- */
+
+/* ---------- 運営会社 ---------- */
+.bs-company { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: center; }
+.bs-company .bs-h2 { margin-bottom: 16px; }
+.bs-company__table { background: #fff; border: var(--bs-border-w) solid var(--bs-ink); box-shadow: var(--bs-shadow-panel); }
+.bs-company__table div { display: grid; grid-template-columns: 9em 1fr; }
+.bs-company__table div + div { border-top: 2px solid var(--bs-ink); }
+.bs-company__table dt { padding: 16px 18px; font-size: 14px; font-weight: 900; background: var(--bs-ink); color: #fff; }
+.bs-company__table dd { margin: 0; padding: 16px 20px; font-size: 15px; font-weight: 500; }
+.bs-company__table a { color: var(--bs-accent-deep); font-weight: 900; }
+
+/* ---------- 最後の案内 ---------- */
+.bs-end { position: relative; background: #000; color: #fff; padding: 140px 0; overflow: hidden; text-align: center; }
+.bs-end::after { content: ""; position: absolute; inset: 24px; border: 1px solid rgba(255, 255, 255, 0.18); pointer-events: none; }
+.bs-end__inner { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; padding: 0 32px; }
+.bs-end__eyebrow { font-family: var(--bs-font-mono); font-size: 12px; font-weight: 900; letter-spacing: 0.42em; color: var(--bs-yellow); margin-bottom: 32px; }
+.bs-end__title { font-family: var(--bs-font-display); font-weight: 900; font-size: clamp(30px, 5.2vw, 58px); line-height: 1.5; letter-spacing: 0.02em; margin-bottom: 28px; }
+.bs-end__title em {
+  font-style: normal; color: var(--bs-accent); padding: 0 6px;
+  background-image: linear-gradient(to top, rgba(255, 213, 74, 0.55) 0%, rgba(255, 213, 74, 0.55) 28%, transparent 28%);
+}
+.bs-end__text { font-size: clamp(14px, 1.2vw, 16px); line-height: 2; color: rgba(255, 255, 255, 0.82); max-width: 640px; margin: 0 auto 48px; }
+.bs-end__actions { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
+
+/* ---------- フッター ---------- */
+.bs-footer { background: var(--bs-ink); color: rgba(255, 255, 255, 0.8); padding: 36px 0; font-size: 14px; border-top: 1px solid rgba(255, 255, 255, 0.18); }
+.bs-footer__inner { max-width: 1180px; margin: 0 auto; padding: 0 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 32px; }
+.bs-footer__brand { font-family: var(--bs-font-mono); font-weight: 900; font-size: 18px; color: #fff; display: flex; align-items: baseline; gap: 10px; }
+.bs-footer__brand span { font-family: var(--bs-font-sans); font-size: 12px; font-weight: 700; color: rgba(255, 255, 255, 0.7); }
+.bs-footer__links { display: flex; flex-wrap: wrap; gap: 4px 20px; }
+.bs-footer__links a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; }
+.bs-footer__links a:hover { color: var(--bs-yellow); }
+.bs-footer__copy { margin-left: auto; font-size: 12px; }
+
+/* ---------- 事例を見る窓 ---------- */
+.bs-modal { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 24px; }
+.bs-modal__backdrop { position: absolute; inset: 0; background: rgba(10, 10, 10, 0.82); }
+.bs-modal__dialog {
+  position: relative; width: min(1040px, 100%); max-height: calc(100dvh - 48px);
+  display: flex; flex-direction: column; background: #fff; overflow: hidden;
+  border: var(--bs-border-w) solid var(--bs-ink); box-shadow: 10px 10px 0 var(--bs-accent);
+}
+.bs-modal__head { display: flex; align-items: center; gap: 16px; padding: 12px 14px 12px 24px; border-bottom: var(--bs-border-w) solid var(--bs-ink); background: var(--bs-cream); }
+.bs-modal__title { font-family: var(--bs-font-display); font-size: 18px; font-weight: 900; line-height: 1.45; }
+.bs-modal__close {
+  margin-left: auto; flex: none; appearance: none; cursor: pointer; width: 44px; height: 44px;
+  background: var(--bs-ink); color: #fff; border: 0; font-size: 26px; line-height: 1;
+}
+.bs-modal__body { overflow-y: auto; overscroll-behavior: contain; }
+.bs-video { position: relative; aspect-ratio: 16 / 9; background: #000; }
+.bs-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.bs-video--pending {
+  display: grid; place-items: center;
+  background-color: var(--bs-ink); background-image: radial-gradient(rgba(232, 85, 0, 0.45) 1px, transparent 1.5px); background-size: 8px 8px;
+}
+.bs-video--pending .bs-placeholder { position: relative; color: #fff; font-size: 17px; }
+.bs-reader { display: grid; grid-template-columns: minmax(0, 1fr) 300px; }
+.bs-reader__pages { background: var(--bs-cream-deep); padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.bs-reader__pages img { width: min(560px, 100%); border: 2px solid var(--bs-ink); background: #fff; }
+.bs-reader__info { padding: 24px; border-left: var(--bs-border-w) solid var(--bs-ink); }
+.bs-reader__info dl { display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; font-size: 14px; }
+.bs-reader__info dt { font-weight: 900; color: var(--bs-accent); }
+.bs-reader__info dd { margin: 0; font-weight: 700; }
+.bs-page.bs-modal-open { overflow: hidden; }
+
+/* ---------- 画面幅ごと ---------- */
+@media (max-width: 1100px) {
+  .bs-nav { display: none; }
+  .bs-header__cta { margin-left: auto; }
+}
+@media (max-width: 1000px) {
+  /* 段階は縦並び。矢印は下向き */
+  .bs-steps, .bs-flow { grid-template-columns: 1fr; gap: 52px; max-width: 640px; margin: 0 auto; }
+  .bs-flow__step { min-height: 0; }
+  .bs-step:not(:last-child)::after, .bs-flow__step:not(:last-child)::after { top: auto; right: auto; left: 50%; bottom: -44px; transform: translateX(-50%) rotate(90deg); }
+  .bs-step:not(:last-child)::before, .bs-flow__step:not(:last-child)::before { top: auto; right: auto; left: 50%; bottom: -47px; transform: translateX(-50%) rotate(90deg); }
+  .bs-feature__body { grid-template-columns: 1fr; }
+  .bs-feature__arrow { transform: rotate(90deg); }
+  .bs-hero__inner { grid-template-columns: 1fr; gap: 40px; padding: 48px 24px 64px; }
+  .bs-services { grid-template-columns: 1fr; max-width: 560px; margin: 0 auto; }
+  .bs-panels, .bs-svc-section .bs-merits { grid-template-columns: 1fr; max-width: 640px; margin-left: auto; margin-right: auto; }
+  .bs-svc-head { padding-top: 0; }
+  .bs-svc-tag { position: static; width: fit-content; margin: 0 auto 24px; }
+  .bs-grid--manga, .bs-grid--wide { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bs-case { grid-template-columns: 1fr; }
+  .bs-case__media { max-width: 420px; aspect-ratio: 16 / 10; }
+  .bs-company { grid-template-columns: 1fr; gap: 32px; }
+  .bs-reader { grid-template-columns: 1fr; }
+  .bs-reader__info { border-left: 0; border-bottom: var(--bs-border-w) solid var(--bs-ink); order: -1; }
+}
+@media (max-width: 720px) {
+  .bs-container { padding: 0 20px; }
+  .bs-section { padding: 72px 0; }
+  .bs-bridge, .bs-end { padding: 96px 0; }
+  .bs-br-pc { display: none; }
+  .bs-head { margin-bottom: 44px; }
+  .bs-logo__ja { display: none; }
+  .bs-hero__actions .bs-btn { flex: 1 1 100%; }
+  .bs-panels, .bs-merits { grid-template-columns: 1fr; gap: 28px; }
+  .bs-panel-card { padding: 92px 22px 26px; }
+  .bs-panel-card__num { top: 22px; left: 22px; }
+  .bs-feature { padding: 22px; }
+  .bs-feature__body { grid-template-columns: 1fr; }
+  .bs-grid--wide, .bs-grid--video { grid-template-columns: 1fr; }
+  .bs-grid--manga { gap: 20px 16px; }
+  .bs-sub { margin-top: 72px; }
+  .bs-case { padding: 18px; gap: 20px; }
+  .bs-case__rows div { grid-template-columns: 1fr; gap: 6px; }
+  .bs-case__rows dt { justify-self: start; padding: 2px 12px; }
+  .bs-case__result { padding: 10px 12px; }
+  .bs-company__table div { grid-template-columns: 7em 1fr; }
+  .bs-footer__copy { margin-left: 0; }
+  .bs-modal { padding: 0; }
+  .bs-modal__dialog { max-height: 100dvh; height: 100dvh; box-shadow: none; border: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html:has(.bs-page) { scroll-behavior: auto; }
+  .bs-page *, .bs-page *::before, .bs-page *::after { transition: none !important; }
+}
