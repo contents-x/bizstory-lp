@@ -316,7 +316,18 @@
     });
   }
 
+  // 狭い画面のメニュー: 項目を押したら閉じる・Esc で閉じる
+  function initMenu() {
+    var menu = $('[data-bs-menu]');
+    if (!menu) return;
+    $all('a', menu).forEach(function (a) { a.addEventListener('click', function () { menu.open = false; }); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && menu.open) { menu.open = false; $('summary', menu).focus(); }
+    });
+  }
+
   function init() {
+    initMenu();
     initModal();
     initReadButtons();
     renderManga();
