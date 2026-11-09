@@ -1,0 +1,39 @@
+# GitHub Pages への公開（https://kurom.jp/）
+# 公開するのは v7/ フォルダの中身だけ（直下の v1・v2〜v6・メモ類は公開しない）。
+# 公開する版を変えるときは、下の SITE_DIR を変える。独自ドメイン（kurom.jp）はリポジトリの Settings > Pages で設定している。
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "v7/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  SITE_DIR: v7
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ env.SITE_DIR }}
+      - id: deployment
+        uses: actions/deploy-pages@v4
