@@ -1106,3 +1106,6 @@ html:has(.bs-page) { scroll-behavior: smooth; scroll-padding-top: calc(var(--bs-
 .bs-feature__media--video { cursor: default; background: #000; }
 .bs-feature__media--video:hover { transform: none; box-shadow: var(--bs-shadow-panel-sm); }
 .bs-feature__media--video video { display: block; width: 100%; height: 100%; object-fit: contain; background: #000; }
+
+/* お問い合わせ: 送信できたとき */
+.bs-form__status--done { background: #eef8ee; border-color: #2e7d32; color: #1b5e20; }

@@ -4,10 +4,12 @@
   <meta charset="UTF-8">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- ビズストーリー LP のお問い合わせ画面（v7）。画面だけ作っている。送信先（どこへ届けるか）は未定なので、
-       「送信する」を押しても、入力の確認をして「送信先は準備中」と表示するだけで、どこへも送らない（CSP の form-action 'none'・connect-src 'none' のまま）。
-       送信先が決まったら、form の送り先と CSP を変え、bizstory.js の initContact を直す。 -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; img-src 'self' data: https://i.ytimg.com; font-src 'self' https://fonts.gstatic.com; connect-src 'none'; frame-src https://www.youtube-nocookie.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <!-- ビズストーリー LP のお問い合わせ画面（v7）。送信先は Contents X CRM の受信箱（受信元の公開キーはページ末尾の script）。
+       送り方: bizstory.js の initContact が入力を確かめ、問題がなければ BizcarteInbound.sendForm() で受信箱へ送る（data-auto="false"。
+       未入力のまま送られないよう、自動の送信は止めている）。ほかの送信先は無い。
+       受信元の公開キーは秘密ではない（ブラウザに出る）。受信箱は、受信元に登録された許可ドメイン（kurom.jp）からの送信だけを受け付ける。
+       CSP: script-src と connect-src に CRM（contentsx-crm.vercel.app）だけを足している。 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://contentsx-crm.vercel.app; style-src 'self' https://fonts.googleapis.com; img-src 'self' data: https://i.ytimg.com; font-src 'self' https://fonts.gstatic.com; connect-src https://contentsx-crm.vercel.app; frame-src https://www.youtube-nocookie.com; object-src 'none'; base-uri 'self'; form-action 'none'">
   <meta http-equiv="Permissions-Policy" content="interest-cohort=(), browsing-topics=()">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <title>お問い合わせ｜BIZ STORY（ビズストーリー）</title>
@@ -74,43 +76,43 @@
           <fieldset class="bs-form__row bs-form__set">
             <legend class="bs-form__label">ご相談の内容<span class="bs-form__req">必須</span></legend>
             <div class="bs-form__choices">
-              <label class="bs-form__choice"><input type="radio" name="topic" value="consult" required checked><span>無料相談・お見積もり</span></label>
-              <label class="bs-form__choice"><input type="radio" name="topic" value="free"><span>1ページ漫画の無料制作</span></label>
-              <label class="bs-form__choice"><input type="radio" name="topic" value="other"><span>その他</span></label>
+              <label class="bs-form__choice"><input type="radio" name="topic" value="無料相談・お見積もり" required checked><span>無料相談・お見積もり</span></label>
+              <label class="bs-form__choice"><input type="radio" name="topic" value="1ページ漫画の無料制作" data-topic="free"><span>1ページ漫画の無料制作</span></label>
+              <label class="bs-form__choice"><input type="radio" name="topic" value="その他"><span>その他</span></label>
             </div>
           </fieldset>
           <div class="bs-form__row">
             <label class="bs-form__label" for="bsCompany">会社名<span class="bs-form__req">必須</span></label>
-            <input class="bs-form__input" type="text" id="bsCompany" name="company" autocomplete="organization" placeholder="株式会社◯◯" required>
+            <input class="bs-form__input" type="text" id="bsCompany" name="company" data-crm-field="company_name" autocomplete="organization" placeholder="株式会社◯◯" required>
           </div>
           <div class="bs-form__row">
             <label class="bs-form__label" for="bsDepartment">部署・役職<span class="bs-form__opt">任意</span></label>
-            <input class="bs-form__input" type="text" id="bsDepartment" name="department" autocomplete="organization-title" placeholder="代表取締役／マーケティング部">
+            <input class="bs-form__input" type="text" id="bsDepartment" name="department" data-crm-field="department" autocomplete="organization-title" placeholder="代表取締役／マーケティング部">
           </div>
           <div class="bs-form__row">
             <label class="bs-form__label" for="bsName">お名前<span class="bs-form__req">必須</span></label>
-            <input class="bs-form__input" type="text" id="bsName" name="fullName" autocomplete="name" placeholder="佐藤 太郎" required>
+            <input class="bs-form__input" type="text" id="bsName" name="fullName" data-crm-field="full_name" autocomplete="name" placeholder="佐藤 太郎" required>
           </div>
           <div class="bs-form__row">
             <label class="bs-form__label" for="bsEmail">メールアドレス<span class="bs-form__req">必須</span></label>
-            <input class="bs-form__input" type="email" id="bsEmail" name="email" autocomplete="email" placeholder="example@company.com" required>
+            <input class="bs-form__input" type="email" id="bsEmail" name="email" data-crm-field="email" autocomplete="email" placeholder="example@company.com" required>
           </div>
           <div class="bs-form__row">
             <label class="bs-form__label" for="bsTel">電話番号<span class="bs-form__opt">任意</span></label>
-            <input class="bs-form__input" type="tel" id="bsTel" name="tel" autocomplete="tel" placeholder="03-1234-5678">
+            <input class="bs-form__input" type="tel" id="bsTel" name="tel" data-crm-field="phone" autocomplete="tel" placeholder="03-1234-5678">
           </div>
           <fieldset class="bs-form__row bs-form__set">
             <legend class="bs-form__label">気になるサービス<span class="bs-form__opt">任意・複数可</span></legend>
             <div class="bs-form__choices">
-              <label class="bs-form__choice"><input type="checkbox" name="service" value="bizmanga"><span>ビズマンガ</span></label>
-              <label class="bs-form__choice"><input type="checkbox" name="service" value="bizanime"><span>ビズアニメ</span></label>
-              <label class="bs-form__choice"><input type="checkbox" name="service" value="bizvideo"><span>ビズ動画</span></label>
-              <label class="bs-form__choice"><input type="checkbox" name="service" value="undecided"><span>まだ決めていない</span></label>
+              <label class="bs-form__choice"><input type="checkbox" name="service" value="ビズマンガ"><span>ビズマンガ</span></label>
+              <label class="bs-form__choice"><input type="checkbox" name="service" value="ビズアニメ"><span>ビズアニメ</span></label>
+              <label class="bs-form__choice"><input type="checkbox" name="service" value="ビズ動画"><span>ビズ動画</span></label>
+              <label class="bs-form__choice"><input type="checkbox" name="service" value="まだ決めていない"><span>まだ決めていない</span></label>
             </div>
           </fieldset>
           <div class="bs-form__row">
             <label class="bs-form__label" for="bsMessage">お問い合わせ内容<span class="bs-form__req">必須</span></label>
-            <textarea class="bs-form__input bs-form__textarea" id="bsMessage" name="message" rows="7" placeholder="ご質問やご要望、使いたい場面（営業・採用・広告など）をご記入ください" required></textarea>
+            <textarea class="bs-form__input bs-form__textarea" id="bsMessage" name="message" data-crm-field="message" rows="7" placeholder="ご質問やご要望、使いたい場面（営業・採用・広告など）をご記入ください" required></textarea>
           </div>
           <!-- ハニーポット（人には見えない入力欄。送信先が決まったら、値が入っている送信は捨てる） -->
           <div class="bs-form__trap" aria-hidden="true">
@@ -118,7 +120,7 @@
             <input type="text" id="bsWebsite" name="website" tabindex="-1" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore="true" data-form-type="other">
           </div>
           <div class="bs-form__agree">
-            <label class="bs-form__choice"><input type="checkbox" name="agree" id="bsAgree" required><span><a href="https://bizmanga.contentsx.jp/privacy-policy" target="_blank" rel="noopener">プライバシーポリシー</a>に同意する</span></label>
+            <label class="bs-form__choice"><input type="checkbox" name="agree" id="bsAgree" required data-crm-ignore><span><a href="https://bizmanga.contentsx.jp/privacy-policy" target="_blank" rel="noopener">プライバシーポリシー</a>に同意する</span></label>
           </div>
           <div class="bs-form__submit"><button class="bs-btn bs-btn--lg" type="submit">送信する</button></div>
         </form>
@@ -137,5 +139,7 @@
       <p class="bs-footer__copy"><small>&copy; 2026 合同会社KUROM</small></p>
     </div>
   </footer>
+  <!-- Contents X CRM 受信箱連携（送信は bizstory.js の initContact から手動で呼ぶため data-auto="false"。ボット対策の隠し欄は data-honeypot） -->
+  <script src="https://contentsx-crm.vercel.app/embed/inbound-v1.js" data-source-key="1d94e01e3395a80f8139bd9f3fbd54bb" data-auto="false" data-honeypot="#bsWebsite" async></script>
 </body>
 </html>

@@ -368,13 +368,14 @@
     });
   }
 
-  // お問い合わせ画面（contact.html）。送信先は未定なので、入力を確かめて「準備中」と出すだけで、どこへも送らない
+  // お問い合わせ画面（contact.html）。入力を確かめてから、CRM の受信箱へ送る（contact.html の inbound-v1.js。data-auto="false" なのでここから呼ぶ）
+  // inbound-v1.js は応答を待たない作りなので、送り出せたら完了と表示する。スクリプトが読めていない・送り出せないときは、完了と出さない
   function initContact() {
     var form = $('[data-bs-contact]');
     if (!form) return;
     var status = $('[data-bs-contact-status]', form);
     if (/[?&]topic=free\b/.test(location.search)) {
-      var free = $('input[name="topic"][value="free"]', form);
+      var free = $('input[name="topic"][data-topic="free"]', form);
       if (free) free.checked = true;
     }
     function show(kind, text) {
@@ -392,7 +393,15 @@
         show('error', '入力されていない項目、または形式が正しくない項目があります（' + bad.length + '件）。赤い枠の項目をご確認ください。');
         return;
       }
-      show('info', '送信先は準備中です。このページは画面の確認用のため、入力内容はどこにも送られていません。');
+      var inbound = window.BizcarteInbound;
+      var sent = false;
+      try { sent = !!(inbound && typeof inbound.sendForm === 'function' && inbound.sendForm(form)); } catch (err) { sent = false; }
+      if (!sent) {
+        show('error', '送信できませんでした。通信の状態をご確認のうえ、時間をおいてもう一度お試しください。');
+        return;
+      }
+      $all('input, textarea, button', form).forEach(function (f) { f.disabled = true; });
+      show('done', 'お問い合わせを送信しました。内容を確認のうえ、担当者よりご連絡いたします。');
     });
   }
 
