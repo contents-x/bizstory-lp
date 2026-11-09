@@ -4,15 +4,16 @@
   <meta charset="UTF-8">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- BIZ STORY（ビズストーリー）の LP（v7。v5 をもとに、運営会社を合同会社KUROMに変え、数値の実績を載せず「何ができるようになるか」で見せる形にした。
+  <!-- BIZ STORY（ビズストーリー）の LP（v7。v5 をもとに、運営会社を合同会社KUROMに変え、「何ができるようになるか」で見せる形にした。
+       デザインは依頼者の試作（bizstory-lp PR #1 の prototype_top）に合わせた: トップ（マンガ → アニメ → 3つの表現）と「02 マンガの効果」。
        素材は今あるもの（マンガ6本・アニメ8本・実写の作例37本・ASOBI SYSTEM のアニメ）だけで作る。
        使う場面: ① 営業担当（社長）が商談中に画面共有して見せる（主目的）② 商談後・営業メールで URL を受け取った人が社内で見る。
        営業メールは「1ページの漫画を初回無料で」という提案なので、トップと最後に無料の案内を置く。
-       構成は依頼者の実装プロンプト（BIZ_STORY_Claude_Implementation_Prompt.md）の10章:
-         01 トップ → 02 制作実績（最重要。最も効果のあった事例を1件大きく＋タブで一覧）→ 03 課題解決 → 04 サービス
-         → 05 選ばれる理由 → 06 導入のメリット → 07 活用シーン → 08 制作の流れ → 09 よくある質問 → 10 お問い合わせ。
+       構成は依頼者の実装プロンプト（BIZ_STORY_Claude_Implementation_Prompt.md）の10章に「マンガの効果」を足した11章:
+         01 トップ → 02 マンガの効果 → 03 制作実績（タブで一覧）→ 04 課題解決 → 05 サービス
+         → 06 選ばれる理由 → 07 導入のメリット → 08 活用シーン → 09 制作の流れ → 10 よくある質問 → 11 お問い合わせ。
        守ること: 実績の数字・顧客名・成果を作らない／「大手の約1/5」「一気通貫」「ワンストップ」など確かめていない言い方を使わない／
-       納期・修正回数を決めつけない／ビズ動画の対応範囲を言い切らない。数値の実績（応募数◯倍など）は載せない。
+       納期・修正回数を決めつけない／ビズ動画の対応範囲を言い切らない。数値の実績は、今ある資料に無いので載せていない（先方に掲載の了承をとれたら載せてよい）。
        公開先は https://kurom.jp/（GitHub Pages。リポジトリの .github/workflows/pages.yml が v7/ を公開する）。ドメインは下の canonical・og:url の2か所だけに書いている。
        WordPress には接続しない（このドメインからは読めない）。事例のデータは bizstory.js の中にある。 -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; img-src 'self' data: https://i.ytimg.com; font-src 'self' https://fonts.gstatic.com; connect-src 'none'; frame-src https://www.youtube-nocookie.com; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
@@ -33,10 +34,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@700;900&family=Public+Sans:wght@700;900&display=swap">
   <link rel="stylesheet" href="bizstory.css">
-  <link rel="preload" href="images/character/bizchan-upper.webp" as="image" type="image/webp">
+  <link rel="preload" href="images/manga/asobi-recruit/01.webp" as="image" type="image/webp">
   <script defer src="bizstory.js"></script>
 </head>
-<body class="bs-page bs-v5">
+<body class="bs-page bs-v5 bs-v6">
   <a class="bs-skip" href="#main">本文へ移動</a>
 
   <header class="bs-header">
@@ -44,10 +45,10 @@
       <!-- ロゴは正式なデータが無いので、文字と本の形の簡単な印で仮に作っている（正式なロゴが届いたら差し替える） -->
       <a class="bs-brand" href="#top" aria-label="BIZ STORY ビズストーリー トップへ">
         <span class="bs-brand__mark" aria-hidden="true"></span>
-        <span class="bs-brand__name">BIZ STORY</span>
-        <span class="bs-brand__ja">ビズストーリー</span>
+        <span class="bs6-brand__tag">マンガ・アニメ・動画の制作</span>
       </a>
       <nav class="bs-nav" aria-label="ページ内">
+        <a class="bs-nav__link" href="#effects">マンガの効果</a>
         <a class="bs-nav__link" href="#works">制作実績</a>
         <a class="bs-nav__link" href="#solutions">課題解決</a>
         <a class="bs-nav__link" href="#services">サービス</a>
@@ -58,6 +59,7 @@
       <details class="bs-menu" data-bs-menu>
         <summary class="bs-menu__btn" aria-label="ページ内のメニュー"><span class="bs-menu__icon" aria-hidden="true"></span>メニュー</summary>
         <nav class="bs-menu__panel" aria-label="ページ内（メニュー）">
+          <a class="bs-menu__top" href="#effects">マンガの効果</a>
           <a class="bs-menu__top" href="#works">制作実績</a>
           <a class="bs-menu__top" href="#solutions">課題解決</a>
           <a class="bs-menu__top" href="#services">サービス</a>
@@ -73,35 +75,51 @@
   </header>
 
   <main id="main">
-    <!-- ===== 01 トップ（ビズちゃんが案内役になり、右のマンガ・アニメ・動画の作品を示す） ===== -->
-    <section class="bs-top" id="top" aria-labelledby="bs-top-title">
-      <div class="bs-top__inner">
-        <div class="bs-top__copy">
-          <p class="bs-top__tag">マンガ・アニメ・動画の制作</p>
-          <h1 class="bs-top__title" id="bs-top-title">伝えたい想いを、<br>心が動く<em>ストーリー</em>に。</h1>
-          <p class="bs-top__lead">マンガ・アニメ・動画。<br>伝えたい価値を、もっと伝わる形へ。</p>
-          <div class="bs-top__actions">
+    <!-- ===== 01 トップ（マンガを1ページまるごと大きく → スクロールでアニメ → 3つの表現）。
+         マンガとアニメは顔が並ぶと視線が迷うので、別の画面に分ける。キャッチコピーはマンガに重ねず、左のぼかした背景の上に置く ===== -->
+    <section class="bs6-hero" id="top" aria-labelledby="bs-top-title">
+      <img class="bs6-blur" src="images/manga/asobi-recruit/01.webp" alt="" aria-hidden="true">
+      <div class="bs6-hero__inner">
+        <div class="bs6-hero__copy">
+          <p class="bs6-mast" aria-hidden="true"><span>B</span>IZ STORY</p>
+          <h1 class="bs6-hero__title" id="bs-top-title">伝えたい想いを、<br>心が動く<em>ストーリー</em>に。</h1>
+          <p class="bs6-hero__lead">マンガ・アニメ・動画。<br>伝えたい価値を、もっと伝わる形へ。</p>
+          <div class="bs6-hero__actions">
             <a class="bs-btn" href="#works">制作実績を見る</a>
-            <a class="bs-btn bs-btn--ghost" href="#services">サービスを知る</a>
+            <a class="bs-btn bs6-btn--line" href="#services">サービスを知る</a>
           </div>
+          <p class="bs6-hero__credit"><b>01 MANGA</b>採用マンガ</p>
         </div>
-        <div class="bs-top__visual">
-          <img class="bs-top__chara" src="images/character/bizchan-upper.webp" width="600" height="886" alt="ビズストーリーの案内役「ビズちゃん」" fetchpriority="high">
-          <ul class="bs-top__works" aria-label="3つの表現">
-            <li><a href="#works" data-bs-tab-link="manga"><img src="images/manga/asobi-recruit/01.webp" width="900" height="1125" alt=""><span class="bs-top__label"><b>MANGA</b>ビズマンガ</span></a></li>
-            <li><a href="#works" data-bs-tab-link="anime"><img src="https://i.ytimg.com/vi/V9ZC16hTlZI/hqdefault.jpg" width="480" height="360" alt=""><span class="bs-top__label"><b>ANIME</b>ビズアニメ</span></a></li>
-            <li><a href="#works" data-bs-tab-link="video"><img src="images/video/v10.webp" width="640" height="252" alt=""><span class="bs-top__label"><b>VIDEO</b>ビズ動画</span></a></li>
-          </ul>
+        <div class="bs6-hero__visual">
+          <button class="bs6-page" type="button" data-bs-read="asobi-recruit" aria-haspopup="dialog">
+            <img src="images/manga/asobi-recruit/01.webp" width="900" height="1125" alt="採用マンガの1ページ目" fetchpriority="high">
+            <span class="bs6-label"><b>MANGA</b>ビズマンガ</span>
+            <span class="bs6-page__hint">タップして読む</span>
+          </button>
+          <!-- 営業メール（「1ページの漫画を初回無料で」）から来た人への案内。条件は未確定なので、お問い合わせ後に案内する -->
+          <a class="bs6-stamp" href="contact.html?topic=free"><small>はじめての方へ</small><span>1ページの漫画を<br><b>無料</b>で</span><u>無料で相談する ›</u></a>
         </div>
       </div>
-      <!-- 営業メール（「1ページの漫画を初回無料で」）から来た人への案内。条件は未確定なので、お問い合わせ後に案内する書き方にしている -->
-      <div class="bs-offer">
-        <p class="bs-offer__label">はじめての方へ</p>
-        <p class="bs-offer__text">御社の強みが伝わる<strong>1ページの漫画</strong>を、<strong>無料</strong>でお作りします。</p>
-        <a class="bs-offer__link" href="contact.html?topic=free">無料で相談する</a>
-        <p class="bs-offer__note">※ 対象や条件は、お問い合わせのあとにご案内します。</p>
+      <p class="bs6-scroll" aria-hidden="true">SCROLL</p>
+    </section>
+
+    <section class="bs6-anime" aria-label="ビズアニメの作品">
+      <img class="bs6-blur" src="https://i.ytimg.com/vi/V9ZC16hTlZI/hqdefault.jpg" alt="" aria-hidden="true">
+      <div class="bs6-anime__inner">
+        <div class="bs6-anime__label"><span class="bs6-num">02</span><b>ANIME</b><p>ビズアニメ</p></div>
+        <button class="bs6-screen" type="button" data-bs-play="V9ZC16hTlZI" data-bs-title="Good Bye MV" aria-haspopup="dialog" aria-label="ビズアニメの作品「Good Bye MV」を再生">
+          <img src="https://i.ytimg.com/vi/V9ZC16hTlZI/hqdefault.jpg" width="480" height="360" alt="">
+          <span class="bs-card__play" aria-hidden="true"></span>
+        </button>
       </div>
     </section>
+
+    <nav class="bs6-strip" aria-label="3つの表現">
+      <a href="#works" data-bs-tab-link="manga"><img src="images/manga/asobi-recruit/01.webp" alt=""><span><i class="bs6-num">01</i><b>ビズマンガ</b><em>MANGA</em></span></a>
+      <a href="#works" data-bs-tab-link="anime"><img src="https://i.ytimg.com/vi/V9ZC16hTlZI/hqdefault.jpg" alt=""><span><i class="bs6-num">02</i><b>ビズアニメ</b><em>ANIME</em></span></a>
+      <a href="#works" data-bs-tab-link="video"><img src="images/video/v10.webp" alt=""><span><i class="bs6-num">03</i><b>ビズ動画</b><em>VIDEO</em></span></a>
+      <p class="bs6-strip__note">※ 1ページの漫画の無料制作について、対象や条件は、お問い合わせのあとにご案内します。</p>
+    </nav>
 
     <!-- 取引先のロゴ（ビズマンガのトップページに出ている社。画像は contentsx.jp から写した。マクニカは会議で「古い事例」とされたので外した） -->
     <section class="bs-clients" aria-labelledby="bs-clients-title">
@@ -140,49 +158,86 @@
       </div>
     </section>
 
-    <!-- ===== 02 制作実績（最重要） ===== -->
+    <!-- ===== 02 マンガの効果（目的ごとに、制作の目的と「何ができるようになるか」を実際の作品で見せる。
+         数値の成果は、今ある資料に無いので載せていない。先方に掲載の了承をとれたら、できることの下に足す。数字や成果は作らない） ===== -->
+    <section class="bs-section bs-section--cream bs6-effects" id="effects" aria-labelledby="bs-effects-title">
+      <div class="bs-container">
+        <div class="bs-head">
+          <p class="bs-eyebrow"><span class="bs-eyebrow__no">02</span>EFFECTS OF MANGA</p>
+          <h2 class="bs-h2" id="bs-effects-title">マンガにすると、<em>何が変わるのか</em>。</h2>
+          <p class="bs-lead">採用やサービスの説明など、目的ごとに、マンガで何ができるようになるかを実際の作品でご紹介します。</p>
+        </div>
+        <article class="bs6-uc" aria-labelledby="bs6-uc-recruit">
+          <div class="bs6-uc__media">
+            <button class="bs6-page bs6-page--tilt" type="button" data-bs-read="asobi-recruit" aria-haspopup="dialog">
+              <img src="images/manga/asobi-recruit/01.webp" width="900" height="1125" alt="採用マンガの1ページ目" loading="lazy">
+              <span class="bs6-page__hint">全9ページを読む</span>
+            </button>
+          </div>
+          <div class="bs6-uc__body">
+            <p class="bs6-uc__en">RECRUITING</p>
+            <h3 class="bs6-uc__title" id="bs6-uc-recruit"><em>採用</em><small>のマンガ</small></h3>
+            <p class="bs6-uc__industry"><span>業種</span>エンターテインメント（芸能プロダクション）</p>
+            <div class="bs6-ba">
+              <div class="bs6-ba__before"><p class="bs6-ba__label">PURPOSE｜制作の目的</p><p>総合職の採用に向けた、採用マンガ（9ページ）</p></div>
+              <span class="bs6-ba__arrow" aria-hidden="true"></span>
+              <div class="bs6-ba__after"><p class="bs6-ba__label">CAN DO｜できるようになること</p><p class="bs6-ba__result">求職者が、入社後の働き方や職場の雰囲気を、物語として先に知ることができる</p></div>
+            </div>
+            <div class="bs6-why">
+              <!-- マンガという媒体の特徴（成果の言い切りはしない） -->
+              <h4>マンガだから伝わること</h4>
+              <ol>
+                <li><b>仕事の現場と空気を、場面で見せられる</b><span>募集要項の文章では伝わりにくい、働く人の一日や職場の雰囲気を、絵と流れでそのまま見せられます。</span></li>
+                <li><b>読み手が自分を重ねて読める</b><span>主人公の視点で物語が進むので、入社後の自分の姿を想像しやすくなります。</span></li>
+                <li><b>物語で、最後まで読み進められる</b><span>1ページ目から物語で引き込むので、長い説明でも順を追って読み進められます。</span></li>
+              </ol>
+            </div>
+          </div>
+        </article>
+        <article class="bs6-uc bs6-uc--flip" aria-labelledby="bs6-uc-service">
+          <div class="bs6-uc__media">
+            <button class="bs6-page bs6-page--tilt" type="button" data-bs-read="opro-soasc" aria-haspopup="dialog">
+              <img src="images/manga/opro-soasc/effect.png" width="567" height="807" alt="サービス説明のマンガ。導入後の変化を描いたページ" loading="lazy">
+              <span class="bs6-page__hint">全8ページを読む</span>
+            </button>
+          </div>
+          <div class="bs6-uc__body">
+            <p class="bs6-uc__en">SERVICE</p>
+            <h3 class="bs6-uc__title" id="bs6-uc-service"><em>サービス説明</em><small>のマンガ</small></h3>
+            <p class="bs6-uc__industry"><span>業種</span>IT（クラウドサービス）</p>
+            <div class="bs6-ba">
+              <div class="bs6-ba__before"><p class="bs6-ba__label">PURPOSE｜制作の目的</p><p>収益管理サービス（AIサービス編）の内容と、導入後の変化を伝えるマンガ（8ページ）</p></div>
+              <span class="bs6-ba__arrow" aria-hidden="true"></span>
+              <div class="bs6-ba__after"><p class="bs6-ba__label">CAN DO｜できるようになること</p><p class="bs6-ba__result">検討中の人が、導入前の悩みから導入後の変化までを、物語で順を追って知ることができる</p></div>
+            </div>
+            <figure class="bs6-quote"><figcaption>作中で描いた「導入後」</figcaption><blockquote>「管理できるか分からないからやらない」じゃなくて「管理できるからやってみよう」と言えるようになっていた</blockquote></figure>
+            <div class="bs6-why">
+              <!-- マンガという媒体の特徴（成果の言い切りはしない） -->
+              <h4>マンガだから伝わること</h4>
+              <ol>
+                <li><b>導入前の悩みから導入後の変化までを、物語で見せられる</b><span>読み手が「自社ならどうなるか」に置き換えて、使ったあとの姿を想像しやすくなります。</span></li>
+                <li><b>専門的な内容を、会話で順を追って説明できる</b><span>機能や仕組みを、登場人物のやりとりとして少しずつ説明できるので、前提知識がなくても読み進められます。</span></li>
+                <li><b>数字では伝えにくい変化を描ける</b><span>「やってみよう」と言えるようになった、のような気持ちや社内の空気の変化を、表情とセリフで伝えられます。</span></li>
+              </ol>
+            </div>
+            <p class="bs6-uc__made"><b>制作</b>収益管理サービスの内容と、導入後の変化を8ページのマンガに。</p>
+          </div>
+        </article>
+        <div class="bs6-offer">
+          <p>御社の強みが伝わる<strong>1ページの漫画</strong>を、<strong>無料</strong>でお作りします。</p>
+          <a class="bs-btn" href="contact.html?topic=free">無料で相談する</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 03 制作実績（最重要） ===== -->
     <section class="bs-section bs-section--cream" id="works" aria-labelledby="bs-works-title">
       <div class="bs-container">
         <div class="bs-head">
-          <p class="bs-eyebrow"><span class="bs-eyebrow__no">02</span>WORKS</p>
+          <p class="bs-eyebrow"><span class="bs-eyebrow__no">03</span>WORKS</p>
           <h2 class="bs-h2" id="bs-works-title"><em>制作実績</em></h2>
           <p class="bs-lead">まずは作品をご覧ください。カードを押すと、その場でマンガを読んだり、動画を再生したりできます。</p>
         </div>
-
-        <!-- 一番大きく見せる1件（議事録の決定事項「最も効果のあった事例を1つ大きく」）。ASOBI SYSTEM（マンガ → アニメ）。
-             数値の成果は載せず、制作したものと「何ができるようになるか」で見せる -->
-        <article class="bs-featured" aria-labelledby="bs-featured-title">
-          <div class="bs-featured__head">
-            <p class="bs-featured__label">PICK UP</p>
-            <p class="bs-featured__kind">ビズマンガ × ビズアニメ</p>
-            <h3 class="bs-featured__title" id="bs-featured-title">ASOBI SYSTEM 様｜マンガでつくった物語を、アニメへ</h3>
-          </div>
-          <div class="bs-featured__body">
-            <div class="bs-featured__media">
-              <div class="bs-feature__slot">
-                <p class="bs-feature__slot-label"><span>MANGA</span>採用マンガ</p>
-                <button class="bs-feature__media bs-feature__media--manga" type="button" data-bs-feature="manga" aria-haspopup="dialog">
-                  <img src="images/manga/asobi-recruit/01.webp" width="900" height="1125" alt="ASOBI SYSTEM 様の採用マンガの1ページ目" loading="lazy">
-                  <span class="bs-feature__hint">タップして読む</span>
-                </button>
-              </div>
-              <span class="bs-feature__arrow" aria-hidden="true"></span>
-              <div class="bs-feature__slot">
-                <p class="bs-feature__slot-label"><span>ANIME</span>アニメ（約3分）</p>
-                <!-- ASOBI SYSTEM 様からいただいたアニメ（videos/asobi-system.mp4・640×360・H.264）。表紙は動画の最初の場面 -->
-                <div class="bs-feature__media bs-feature__media--anime bs-feature__media--video">
-                  <video src="videos/asobi-system.mp4" poster="images/asobi-anime-poster.webp" width="640" height="360" controls preload="metadata" playsinline aria-label="ASOBI SYSTEM 様のアニメ"></video>
-                </div>
-              </div>
-            </div>
-            <dl class="bs-case__rows bs-featured__rows">
-              <div><dt>制作目的</dt><dd>総合職の採用</dd></div>
-              <div><dt>制作内容</dt><dd>採用マンガ（9ページ）と、同じ物語・キャラクターのアニメ</dd></div>
-              <div class="bs-case__result"><dt>できること</dt><dd>求職者が、入社後の働き方や職場の雰囲気を、物語として先に知ることができる</dd></div>
-              <div class="bs-case__result"><dt>広がり</dt><dd>同じキャラクターと世界観のままアニメにして、読む場面と見る場面の両方で使える</dd></div>
-            </dl>
-          </div>
-        </article>
 
         <!-- 一覧（タブで マンガ／アニメ／動画 を切り替える） -->
         <div class="bs-works">
@@ -210,11 +265,11 @@
       </div>
     </section>
 
-    <!-- ===== 03 課題解決（効果は言い切らない。おすすめの表現は目安） ===== -->
+    <!-- ===== 04 課題解決（効果は言い切らない。おすすめの表現は目安） ===== -->
     <section class="bs-section" id="solutions" aria-labelledby="bs-solutions-title">
       <div class="bs-container">
         <div class="bs-head">
-          <p class="bs-eyebrow"><span class="bs-eyebrow__no">03</span>SOLUTIONS</p>
+          <p class="bs-eyebrow"><span class="bs-eyebrow__no">04</span>SOLUTIONS</p>
           <h2 class="bs-h2" id="bs-solutions-title">こんな<em>お悩み</em>はありませんか？</h2>
           <p class="bs-lead">文字だけでは伝わりにくいことを、物語と映像で伝えやすくします。</p>
         </div>
@@ -232,11 +287,11 @@
       </div>
     </section>
 
-    <!-- ===== 04 サービス（3つの違い。押すと制作実績の該当タブへ） ===== -->
+    <!-- ===== 05 サービス（3つの違い。押すと制作実績の該当タブへ） ===== -->
     <section class="bs-section bs-section--cream" id="services" aria-labelledby="bs-services-title">
       <div class="bs-container">
         <div class="bs-head">
-          <p class="bs-eyebrow"><span class="bs-eyebrow__no">04</span>SERVICES</p>
+          <p class="bs-eyebrow"><span class="bs-eyebrow__no">05</span>SERVICES</p>
           <h2 class="bs-h2" id="bs-services-title">伝える相手に合わせて、<em>3つの表現</em>から。</h2>
         </div>
         <div class="bs-services3">
@@ -286,11 +341,11 @@
       </div>
     </section>
 
-    <!-- ===== 05 選ばれる理由（3つのサービスに共通しないものは、サービスの札を付ける） ===== -->
+    <!-- ===== 06 選ばれる理由（3つのサービスに共通しないものは、サービスの札を付ける） ===== -->
     <section class="bs-section" id="reasons" aria-labelledby="bs-reasons-title">
       <div class="bs-container">
         <div class="bs-head">
-          <p class="bs-eyebrow"><span class="bs-eyebrow__no">05</span>WHY BIZ STORY</p>
+          <p class="bs-eyebrow"><span class="bs-eyebrow__no">06</span>WHY BIZ STORY</p>
           <h2 class="bs-h2" id="bs-reasons-title">BIZ STORY が<em>選ばれる理由</em></h2>
         </div>
         <ol class="bs-reasons">
@@ -334,11 +389,11 @@
       </div>
     </section>
 
-    <!-- ===== 06 導入のメリット（制作物を使う企業側のメリット。効果は言い切らない） ===== -->
+    <!-- ===== 07 導入のメリット（制作物を使う企業側のメリット。効果は言い切らない） ===== -->
     <section class="bs-section bs-section--ink" id="benefits" aria-labelledby="bs-benefits-title">
       <div class="bs-container">
         <div class="bs-head bs-head--dark">
-          <p class="bs-eyebrow"><span class="bs-eyebrow__no">06</span>BENEFITS</p>
+          <p class="bs-eyebrow"><span class="bs-eyebrow__no">07</span>BENEFITS</p>
           <h2 class="bs-h2" id="bs-benefits-title">物語にすると、<em>伝わり方が変わる</em>。</h2>
         </div>
         <ul class="bs-benefits">
@@ -352,11 +407,11 @@
       </div>
     </section>
 
-    <!-- ===== 07 活用シーン（8つ。押すと制作実績の該当タブへ。おすすめの表現は目安） ===== -->
+    <!-- ===== 08 活用シーン（8つ。押すと制作実績の該当タブへ。おすすめの表現は目安） ===== -->
     <section class="bs-section bs-section--cream" id="usecases" aria-labelledby="bs-usecases-title">
       <div class="bs-container">
         <div class="bs-head">
-          <p class="bs-eyebrow"><span class="bs-eyebrow__no">07</span>USE CASES</p>
+          <p class="bs-eyebrow"><span class="bs-eyebrow__no">08</span>USE CASES</p>
           <h2 class="bs-h2" id="bs-usecases-title"><em>活用シーン</em></h2>
           <p class="bs-lead">押すと、近い制作実績をご覧いただけます。</p>
         </div>
@@ -374,11 +429,11 @@
       </div>
     </section>
 
-    <!-- ===== 08 制作の流れ（共通の流れ。納期・修正回数はサービスごとに異なるので書かない） ===== -->
+    <!-- ===== 09 制作の流れ（共通の流れ。納期・修正回数はサービスごとに異なるので書かない） ===== -->
     <section class="bs-section" id="flow" aria-labelledby="bs-flow-title">
       <div class="bs-container">
         <div class="bs-head">
-          <p class="bs-eyebrow"><span class="bs-eyebrow__no">08</span>PROCESS</p>
+          <p class="bs-eyebrow"><span class="bs-eyebrow__no">09</span>PROCESS</p>
           <h2 class="bs-h2" id="bs-flow-title"><em>制作の流れ</em></h2>
           <p class="bs-lead">はじめてのご依頼でも、ご相談から納品まで順を追って進めます。</p>
         </div>
@@ -394,11 +449,11 @@
       </div>
     </section>
 
-    <!-- ===== 09 よくある質問（確かめていない条件は書かず「個別にご案内」にする） ===== -->
+    <!-- ===== 10 よくある質問（確かめていない条件は書かず「個別にご案内」にする） ===== -->
     <section class="bs-section bs-section--cream" id="faq" aria-labelledby="bs-faq-title">
       <div class="bs-container">
         <div class="bs-head">
-          <p class="bs-eyebrow"><span class="bs-eyebrow__no">09</span>FAQ</p>
+          <p class="bs-eyebrow"><span class="bs-eyebrow__no">10</span>FAQ</p>
           <h2 class="bs-h2" id="bs-faq-title"><em>よくある質問</em></h2>
         </div>
         <div class="bs-faq">
@@ -416,10 +471,10 @@
       </div>
     </section>
 
-    <!-- ===== 10 お問い合わせ（お問い合わせ画面へ。会社の情報もここに） ===== -->
+    <!-- ===== 11 お問い合わせ（お問い合わせ画面へ。会社の情報もここに） ===== -->
     <section class="bs-end" id="contact" aria-labelledby="bs-end-title">
       <div class="bs-end__inner">
-        <p class="bs-end__eyebrow">10 CONTACT</p>
+        <p class="bs-end__eyebrow">11 CONTACT</p>
         <h2 class="bs-end__title" id="bs-end-title">伝えたいことを、<br><em>伝わるカタチ</em>に。</h2>
         <p class="bs-end__text">まずは、やりたいことをお聞かせください。使うサービスが決まっていなくても構いません。</p>
         <div class="bs-end__actions">
@@ -446,7 +501,7 @@
     </div>
   </footer>
 
-  <!-- 作品を見るための窓（マンガ・動画で共通） -->
+  <!-- 動画を見るための窓 -->
   <div class="bs-modal" data-bs-modal hidden>
     <div class="bs-modal__backdrop" data-bs-close></div>
     <div class="bs-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="bs-modal-title" tabindex="-1">
@@ -456,6 +511,23 @@
       </div>
       <div class="bs-modal__body" data-bs-modal-body></div>
     </div>
+  </div>
+
+  <!-- マンガを読む窓（ビズマンガのHPのトップと同じ、1ページずつめくる形。企業名・用途・ページ数は出さない）。中身は bizstory.js の openViewer が入れる -->
+  <div class="bs-viewer" data-bs-viewer hidden>
+    <div class="bs-viewer__backdrop" data-bs-viewer-close></div>
+    <div class="bs-viewer__dialog" role="dialog" aria-modal="true" aria-label="マンガ">
+      <div class="bs-viewer__stage">
+        <div class="bs-viewer__track"></div>
+        <button class="bs-viewer__arrow bs-viewer__prev" type="button" aria-label="前のページ">&#8249;</button>
+        <button class="bs-viewer__arrow bs-viewer__next" type="button" aria-label="次のページ">&#8250;</button>
+      </div>
+      <div class="bs-viewer__foot">
+        <div class="bs-viewer__dots"></div>
+        <p class="bs-viewer__count" aria-live="polite"></p>
+      </div>
+    </div>
+    <button class="bs-viewer__close" type="button" data-bs-viewer-close aria-label="閉じる">&times;</button>
   </div>
 </body>
 </html>

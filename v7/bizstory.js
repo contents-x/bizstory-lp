@@ -8,13 +8,13 @@
 
   /* ---------- 事例のデータ ---------- */
 
-  // pages はページ画像の枚数（01.webp〜）
+  // pages はページ画像の枚数（01.webp〜）。事例に企業名は載せない（題にも入れない）
   var MANGA = [
-    { slug: 'asobi-recruit', title: 'アソビシステム採用漫画（総合職）', client: 'ASOBI SYSTEM', use: '採用', pages: 9 },
-    { slug: 'bizsalesnavi', title: 'マンガでわかるビズセールスナビ', client: 'Contents X（自社サービス）', use: '商品紹介', pages: 12 },
-    { slug: 'opro-soasc', title: 'マンガでわかる収益管理【AIサービス編】', client: '株式会社オプロ', use: '商品紹介', pages: 8 },
-    { slug: 'saigo-no-hoken', title: '最後の保険', client: '楽天モバイル', use: '集客', pages: 7 },
-    { slug: 'gaudia-2', title: 'ガウディア「もうすぐ入学のタクマくん」', client: 'ガウディア', use: '営業・集客', pages: 7 }
+    { slug: 'asobi-recruit', title: '総合職の採用マンガ', use: '採用', pages: 9 },
+    { slug: 'bizsalesnavi', title: 'マンガでわかるビズセールスナビ', use: '商品紹介', pages: 12 },
+    { slug: 'opro-soasc', title: 'マンガでわかる収益管理【AIサービス編】', use: '商品紹介', pages: 8 },
+    { slug: 'saigo-no-hoken', title: '最後の保険', use: '集客', pages: 7 },
+    { slug: 'gaudia-2', title: '「もうすぐ入学のタクマくん」', use: '営業・集客', pages: 7 }
   ];
 
   // ビズアニメ（YouTube で公開中の作品）
@@ -74,7 +74,7 @@
   ];
 
   // マンガ → アニメの事例（ASOBI SYSTEM）。アニメの動画が決まったら youtube に ID を入れる
-  // v7: アニメは index.html の <video>（videos/asobi-system.mp4）で再生するので、youtube は空のまま
+  // v7: ASOBI SYSTEM のアニメは自前の動画（videos/asobi-system.mp4）。今はページに置いていない。youtube は空のまま
   var FEATURE = { manga: 'asobi-recruit', animeTitle: 'ASOBI SYSTEM 様のアニメ', youtube: '' };
 
   /* ---------- ここから表示 ---------- */
@@ -199,28 +199,92 @@
     return box;
   }
 
-  function mangaReader(m) {
-    var wrap = el('div', 'bs-reader');
-    var pages = el('div', 'bs-reader__pages');
+  /* ---------- マンガを読む窓（ビズマンガのHPのトップと同じ、1ページずつめくる形） ---------- */
+  var viewer = { pages: 0, current: 0, lastFocus: null };
+
+  function viewerGo(n) {
+    var box = $('[data-bs-viewer]');
+    if (n < 0 || n >= viewer.pages) return;
+    viewer.current = n;
+    $('.bs-viewer__track', box).style.transform = 'translateX(-' + (n * 100) + '%)';
+    $all('.bs-viewer__dot', box).forEach(function (d, i) {
+      d.classList.toggle('is-active', i === n);
+      d.setAttribute('aria-current', i === n ? 'true' : 'false');
+    });
+    $('.bs-viewer__prev', box).disabled = n === 0;
+    $('.bs-viewer__next', box).disabled = n === viewer.pages - 1;
+    $('.bs-viewer__count', box).textContent = (n + 1) + ' / ' + viewer.pages;
+  }
+
+  function openViewer(m) {
+    var box = $('[data-bs-viewer]');
+    if (!box || !m) return;
+    var track = $('.bs-viewer__track', box);
+    var dots = $('.bs-viewer__dots', box);
+    var name = m.use + 'のマンガ';
+    track.textContent = '';
+    dots.textContent = '';
     for (var i = 1; i <= m.pages; i++) {
       var img = document.createElement('img');
       img.src = mangaPage(m.slug, i);
-      img.alt = m.title + '（' + i + 'ページ目）';
+      img.alt = name + '（' + i + 'ページ目）';
       img.loading = i <= 2 ? 'eager' : 'lazy';
       img.decoding = 'async';
-      img.width = 900;
-      pages.appendChild(img);
+      track.appendChild(img);
+      var dot = el('button', 'bs-viewer__dot');
+      dot.type = 'button';
+      dot.setAttribute('aria-label', i + 'ページ目へ');
+      dot.addEventListener('click', viewerGo.bind(null, i - 1));
+      dots.appendChild(dot);
     }
-    var info = el('div', 'bs-reader__info');
-    var dl = document.createElement('dl');
-    [['お客様', m.client], ['用途', m.use], ['ページ数', m.pages + 'ページ']].forEach(function (row) {
-      dl.appendChild(el('dt', '', row[0]));
-      dl.appendChild(el('dd', '', row[1]));
+    $('.bs-viewer__dialog', box).setAttribute('aria-label', name);
+    viewer.pages = m.pages;
+    viewer.lastFocus = document.activeElement;
+    box.hidden = false;
+    document.body.classList.add('bs-modal-open');
+    viewerGo(0);
+    $('.bs-viewer__close', box).focus();
+  }
+
+  function closeViewer() {
+    var box = $('[data-bs-viewer]');
+    if (!box || box.hidden) return;
+    box.hidden = true;
+    $('.bs-viewer__track', box).textContent = '';
+    document.body.classList.remove('bs-modal-open');
+    if (viewer.lastFocus && typeof viewer.lastFocus.focus === 'function') viewer.lastFocus.focus();
+  }
+
+  function initViewer() {
+    var box = $('[data-bs-viewer]');
+    if (!box) return;
+    $all('[data-bs-viewer-close]', box).forEach(function (b) { b.addEventListener('click', closeViewer); });
+    $('.bs-viewer__prev', box).addEventListener('click', function () { viewerGo(viewer.current - 1); });
+    $('.bs-viewer__next', box).addEventListener('click', function () { viewerGo(viewer.current + 1); });
+    // 指でめくる（左へはらうと次のページ）
+    var stage = $('.bs-viewer__stage', box);
+    var startX = null, startY = 0;
+    stage.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; startY = e.touches[0].clientY; }, { passive: true });
+    stage.addEventListener('touchend', function (e) {
+      if (startX === null) return;
+      var dx = e.changedTouches[0].clientX - startX;
+      var dy = e.changedTouches[0].clientY - startY;
+      startX = null;
+      if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return;
+      viewerGo(viewer.current + (dx < 0 ? 1 : -1));
     });
-    info.appendChild(dl);
-    wrap.appendChild(pages);
-    wrap.appendChild(info);
-    return wrap;
+    document.addEventListener('keydown', function (e) {
+      if (box.hidden) return;
+      if (e.key === 'Escape') { closeViewer(); return; }
+      if (e.key === 'ArrowRight') { viewerGo(viewer.current + 1); return; }
+      if (e.key === 'ArrowLeft') { viewerGo(viewer.current - 1); return; }
+      if (e.key !== 'Tab') return;
+      var items = $all('button:not([disabled])', box).filter(function (n) { return n.offsetParent !== null; });
+      if (!items.length) return;
+      var first = items[0], last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
   }
 
   /* ---------- カード ---------- */
@@ -278,8 +342,7 @@
         image: mangaPage(m.slug, 1),
         use: m.use + ' / ' + m.pages + 'P',
         title: m.title,
-        meta: 'クライアント: ' + m.client,
-        onOpen: function () { openModal(m.title, mangaReader(m)); }
+        onOpen: function () { openViewer(m); }
       });
     }));
   }
@@ -334,7 +397,7 @@
     var m = findManga(FEATURE.manga);
     var mangaBtn = $('[data-bs-feature="manga"]');
     var animeBtn = $('[data-bs-feature="anime"]');
-    if (m && mangaBtn) mangaBtn.addEventListener('click', function () { openModal(m.title, mangaReader(m)); });
+    if (m && mangaBtn) mangaBtn.addEventListener('click', function () { openViewer(m); });
     if (animeBtn) {
       if (YT_ID.test(FEATURE.youtube)) {
         animeBtn.textContent = '';
@@ -354,7 +417,7 @@
   function initReadButtons() {
     $all('[data-bs-read]').forEach(function (btn) {
       var m = findManga(btn.getAttribute('data-bs-read'));
-      if (m) btn.addEventListener('click', function () { openModal(m.title, mangaReader(m)); });
+      if (m) btn.addEventListener('click', function () { openViewer(m); });
     });
   }
 
@@ -427,7 +490,7 @@
         if (m) {
           var read = el('button', 'bs-btn', 'マンガを読む（' + m.pages + 'ページ）');
           read.type = 'button';
-          read.addEventListener('click', function () { openModal(m.title, mangaReader(m)); });
+          read.addEventListener('click', function () { closeModal(); openViewer(m); });
           var foot = el('div', 'bs-case-modal__foot');
           foot.appendChild(read);
           right.appendChild(foot);
@@ -440,18 +503,29 @@
     });
   }
 
+  // トップのアニメ（data-bs-play に YouTube の ID、data-bs-title に作品名）
+  function initPlayButtons() {
+    $all('[data-bs-play]').forEach(function (btn) {
+      var id = btn.getAttribute('data-bs-play');
+      var title = btn.getAttribute('data-bs-title') || 'ビズアニメ';
+      btn.addEventListener('click', function () { openModal(title, videoBody(title, id, '')); });
+    });
+  }
+
   function init() {
     initMenu();
     initContact();
     if (!$('[data-bs-modal]')) return; // 事例の無いページ（お問い合わせ）
     initTabs();
     initModal();
+    initViewer();
     initCases();
     initReadButtons();
     renderManga();
     renderAnime();
     renderVideo();
     initFeature();
+    initPlayButtons();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
