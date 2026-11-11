@@ -512,6 +512,26 @@
     });
   }
 
+  // 画面下の相談ボタン: トップを過ぎてから、お問い合わせの章が見えるまでの間だけ出す
+  // （IntersectionObserver は、見えない所から見えない所へ一気に飛ぶと知らせないので、スクロールのたびに位置で判定する）
+  function initFloat() {
+    var bar = $('[data-bs-float]');
+    var top = $('#top');
+    var end = $('#contact');
+    if (!bar || !top || !end) return;
+    var queued = false;
+    function update() {
+      queued = false;
+      var past = top.getBoundingClientRect().bottom < 0;
+      var atEnd = end.getBoundingClientRect().top < window.innerHeight;
+      bar.hidden = !past || atEnd;
+    }
+    function onScroll() { if (!queued) { queued = true; window.requestAnimationFrame(update); } }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    update();
+  }
+
   function init() {
     initMenu();
     initContact();
@@ -526,6 +546,7 @@
     renderVideo();
     initFeature();
     initPlayButtons();
+    initFloat();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

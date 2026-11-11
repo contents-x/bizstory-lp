@@ -9,9 +9,10 @@
        素材は今あるもの（マンガ6本・アニメ8本・実写の作例37本・ASOBI SYSTEM のアニメ）だけで作る。
        使う場面: ① 営業担当（社長）が商談中に画面共有して見せる（主目的）② 商談後・営業メールで URL を受け取った人が社内で見る。
        営業メールは「1ページの漫画を初回無料で」という提案なので、トップと最後に無料の案内を置く。
-       構成は依頼者の実装プロンプト（BIZ_STORY_Claude_Implementation_Prompt.md）の10章に「マンガの効果」を足した11章:
-         01 トップ → 02 マンガの効果 → 03 制作実績（タブで一覧）→ 04 課題解決 → 05 サービス
-         → 06 選ばれる理由 → 07 導入のメリット → 08 活用シーン → 09 制作の流れ → 10 よくある質問 → 11 お問い合わせ。
+       構成（2026-11-11 のフィードバック: 伝えたい所は大きく・文章は必要なものだけ・相談ボタンは大きく・ContentsX を知らない人が迷わない順番）:
+         01 トップ（何の会社か＋相談ボタン。マンガ → アニメ → 動画 → 3つの表現）→ 02 お悩み → 03 サービス → 04 マンガの効果
+         → 05 制作実績 → 06 選ばれる理由 → 07 制作の流れ → 08 よくある質問 → 09 お問い合わせ。画面下に相談ボタンを出し続ける。
+         「導入のメリット」「活用シーン」は、お悩み・マンガの効果と重なるので外した。
        守ること: 実績の数字・顧客名・成果を作らない／「大手の約1/5」「一気通貫」「ワンストップ」など確かめていない言い方を使わない／
        納期・修正回数を決めつけない／ビズ動画の対応範囲を言い切らない。数値の実績は、今ある資料に無いので載せていない（先方に掲載の了承をとれたら載せてよい）。
        公開先は https://kurom.jp/（GitHub Pages。リポジトリの .github/workflows/pages.yml が v7/ を公開する）。ドメインは下の canonical・og:url の2か所だけに書いている。
@@ -48,24 +49,22 @@
         <span class="bs6-brand__tag">マンガ・アニメ・動画の制作</span>
       </a>
       <nav class="bs-nav" aria-label="ページ内">
+        <a class="bs-nav__link" href="#services">サービス</a>
         <a class="bs-nav__link" href="#effects">マンガの効果</a>
         <a class="bs-nav__link" href="#works">制作実績</a>
-        <a class="bs-nav__link" href="#solutions">課題解決</a>
-        <a class="bs-nav__link" href="#services">サービス</a>
         <a class="bs-nav__link" href="#reasons">選ばれる理由</a>
         <a class="bs-nav__link" href="#flow">制作の流れ</a>
+        <a class="bs-nav__link" href="#faq">よくある質問</a>
       </nav>
       <a class="bs-cta" href="contact.html">無料相談・お見積もり</a>
       <details class="bs-menu" data-bs-menu>
         <summary class="bs-menu__btn" aria-label="ページ内のメニュー"><span class="bs-menu__icon" aria-hidden="true"></span>メニュー</summary>
         <nav class="bs-menu__panel" aria-label="ページ内（メニュー）">
+          <a class="bs-menu__top" href="#solutions">こんなお悩みに</a>
+          <a class="bs-menu__top" href="#services">サービス</a>
           <a class="bs-menu__top" href="#effects">マンガの効果</a>
           <a class="bs-menu__top" href="#works">制作実績</a>
-          <a class="bs-menu__top" href="#solutions">課題解決</a>
-          <a class="bs-menu__top" href="#services">サービス</a>
           <a class="bs-menu__top" href="#reasons">選ばれる理由</a>
-          <a class="bs-menu__top" href="#benefits">導入のメリット</a>
-          <a class="bs-menu__top" href="#usecases">活用シーン</a>
           <a class="bs-menu__top" href="#flow">制作の流れ</a>
           <a class="bs-menu__top" href="#faq">よくある質問</a>
           <a class="bs-menu__top" href="#contact">お問い合わせ</a>
@@ -75,7 +74,8 @@
   </header>
 
   <main id="main">
-    <!-- ===== 01 トップ（マンガを1ページまるごと大きく → スクロールでアニメ → 3つの表現）。
+    <!-- ===== 01 トップ（マンガを1ページまるごと大きく → スクロールでアニメ → 動画 → 3つの表現）。
+         ContentsX を知らない人が最初に「何の会社か」と「どこから相談するか」が分かるように、説明の1文と大きな相談ボタンを置く。
          マンガとアニメは顔が並ぶと視線が迷うので、別の画面に分ける。キャッチコピーはマンガに重ねず、左のぼかした背景の上に置く ===== -->
     <section class="bs6-hero" id="top" aria-labelledby="bs-top-title">
       <img class="bs6-blur" src="images/manga/asobi-recruit/01.webp" alt="" aria-hidden="true">
@@ -83,10 +83,10 @@
         <div class="bs6-hero__copy">
           <p class="bs6-mast" aria-hidden="true"><span>B</span>IZ STORY</p>
           <h1 class="bs6-hero__title" id="bs-top-title">伝えたい想いを、<br>心が動く<em>ストーリー</em>に。</h1>
-          <p class="bs6-hero__lead">マンガ・アニメ・動画。<br>伝えたい価値を、もっと伝わる形へ。</p>
+          <p class="bs6-hero__lead">マンガ・アニメ・動画で、<wbr>御社の商品・サービス・想いを<wbr>伝わる形にする<wbr>制作サービスです。</p>
           <div class="bs6-hero__actions">
-            <a class="bs-btn" href="#works">制作実績を見る</a>
-            <a class="bs-btn bs6-btn--line" href="#services">サービスを知る</a>
+            <a class="bs-btn bs-btn--lg bs6-btn--cta" href="contact.html">無料相談・お見積もり</a>
+            <a class="bs-btn bs6-btn--line" href="#works">制作実績を見る</a>
           </div>
           <p class="bs6-hero__credit"><b>01 MANGA</b>採用マンガ</p>
         </div>
@@ -114,11 +114,21 @@
       </div>
     </section>
 
+    <section class="bs6-anime bs6-video" aria-label="ビズ動画の作品">
+      <img class="bs6-blur" src="https://i.ytimg.com/vi/4eCx5g9XSYQ/maxresdefault.jpg" alt="" aria-hidden="true">
+      <div class="bs6-anime__inner">
+        <div class="bs6-anime__label"><span class="bs6-num">03</span><b>VIDEO</b><p>ビズ動画</p></div>
+        <button class="bs6-screen" type="button" data-bs-play="4eCx5g9XSYQ" data-bs-title="オフロード車 CM" aria-haspopup="dialog" aria-label="ビズ動画の作例「オフロード車 CM」を再生">
+          <img src="https://i.ytimg.com/vi/4eCx5g9XSYQ/maxresdefault.jpg" width="1280" height="720" alt="">
+          <span class="bs-card__play" aria-hidden="true"></span>
+        </button>
+      </div>
+    </section>
+
     <nav class="bs6-strip" aria-label="3つの表現">
       <a href="#works" data-bs-tab-link="manga"><img src="images/manga/asobi-recruit/01.webp" alt=""><span><i class="bs6-num">01</i><b>ビズマンガ</b><em>MANGA</em></span></a>
       <a href="#works" data-bs-tab-link="anime"><img src="https://i.ytimg.com/vi/V9ZC16hTlZI/hqdefault.jpg" alt=""><span><i class="bs6-num">02</i><b>ビズアニメ</b><em>ANIME</em></span></a>
-      <a href="#works" data-bs-tab-link="video"><img src="images/video/v10.webp" alt=""><span><i class="bs6-num">03</i><b>ビズ動画</b><em>VIDEO</em></span></a>
-      <p class="bs6-strip__note">※ 1ページの漫画の無料制作について、対象や条件は、お問い合わせのあとにご案内します。</p>
+      <a href="#works" data-bs-tab-link="video"><img src="https://i.ytimg.com/vi/4eCx5g9XSYQ/hqdefault.jpg" alt=""><span><i class="bs6-num">03</i><b>ビズ動画</b><em>VIDEO</em></span></a>
     </nav>
 
     <!-- 取引先のロゴ（ビズマンガのトップページに出ている社。画像は contentsx.jp から写した。マクニカは会議で「古い事例」とされたので外した） -->
@@ -158,14 +168,82 @@
       </div>
     </section>
 
-    <!-- ===== 02 マンガの効果（目的ごとに、制作の目的と「何ができるようになるか」を実際の作品で見せる。
+    <!-- ===== 02 こんなお悩みに（自分ごとにしてもらう。悩みを大きく、合う表現は札だけ。おすすめの表現は目安） ===== -->
+    <section class="bs-section" id="solutions" aria-labelledby="bs-solutions-title">
+      <div class="bs-container">
+        <div class="bs-head">
+          <p class="bs-eyebrow"><span class="bs-eyebrow__no">02</span>PROBLEMS</p>
+          <h2 class="bs-h2" id="bs-solutions-title">こんな<em>お悩み</em>は<wbr>ありませんか？</h2>
+        </div>
+        <ul class="bs-solutions bs-solutions--short">
+          <li><p class="bs-solutions__pain">商品・サービスの<wbr>魅力が、<wbr>うまく伝わらない</p><p class="bs-solutions__fit"><span>マンガ</span><span>アニメ</span><span>動画</span></p></li>
+          <li><p class="bs-solutions__pain">専門的な内容を、<wbr>分かりやすく<wbr>説明できない</p><p class="bs-solutions__fit"><span>マンガ</span></p></li>
+          <li><p class="bs-solutions__pain">Webサイトや<wbr>広告が、<wbr>印象に残らない</p><p class="bs-solutions__fit"><span>アニメ</span><span>動画</span></p></li>
+          <li><p class="bs-solutions__pain">採用で、<wbr>会社の雰囲気や<wbr>仕事の魅力が<wbr>伝わらない</p><p class="bs-solutions__fit"><span>マンガ</span><span>動画</span></p></li>
+          <li><p class="bs-solutions__pain">営業資料だけでは、<wbr>納得して<wbr>もらいにくい</p><p class="bs-solutions__fit"><span>マンガ</span></p></li>
+          <li><p class="bs-solutions__pain">理念や<wbr>ブランドの想いが、<wbr>広がらない</p><p class="bs-solutions__fit"><span>マンガ</span><span>アニメ</span><span>動画</span></p></li>
+          <li><p class="bs-solutions__pain">研修や<wbr>マニュアルの<wbr>内容が、<wbr>定着しにくい</p><p class="bs-solutions__fit"><span>マンガ</span><span>動画</span></p></li>
+          <li class="bs-solutions__more"><p class="bs-solutions__pain">どれが合うか<wbr>分からなくても</p><a class="bs-solutions__link" href="contact.html">まずは相談する</a></li>
+        </ul>
+        <p class="bs7-bridge">物語にすると、<wbr>文字だけでは<wbr>伝わりにくいことも<wbr>伝わります。</p>
+      </div>
+    </section>
+
+    <!-- ===== 03 サービス（3つの違いを短く。押すと制作実績の該当タブへ） ===== -->
+    <section class="bs-section bs-section--cream" id="services" aria-labelledby="bs-services-title">
+      <div class="bs-container">
+        <div class="bs-head">
+          <p class="bs-eyebrow"><span class="bs-eyebrow__no">03</span>SERVICES</p>
+          <h2 class="bs-h2" id="bs-services-title">伝える相手に合わせて、<br><em>3つの表現</em>から。</h2>
+        </div>
+        <div class="bs-services3">
+          <article class="bs-service">
+            <img class="bs-service__img" src="images/bizmanga.webp" width="1448" height="1086" alt="" loading="lazy">
+            <div class="bs-service__body">
+              <p class="bs-service__en">BIZ MANGA</p>
+              <h3 class="bs-service__name">ビズマンガ</h3>
+              <p class="bs-service__def">商品や会社の魅力を、<wbr>物語の漫画で<wbr>分かりやすく。</p>
+              <dl class="bs-service__rows">
+                <div><dt>使う場面</dt><dd>商品紹介・採用・営業資料・研修・会社紹介</dd></div>
+              </dl>
+              <a class="bs-service__more" href="#works" data-bs-tab-link="manga">ビズマンガの実績を見る</a>
+            </div>
+          </article>
+          <article class="bs-service">
+            <img class="bs-service__img" src="images/bizanime.webp" width="1448" height="1086" alt="" loading="lazy">
+            <div class="bs-service__body">
+              <p class="bs-service__en">BIZ ANIME</p>
+              <h3 class="bs-service__name">ビズアニメ</h3>
+              <p class="bs-service__def">AIと人の演出で、<wbr>目を止めるアニメを。</p>
+              <dl class="bs-service__rows">
+                <div><dt>使う場面</dt><dd>広告・SNS・MV・VTuber演出・オリジナル作品</dd></div>
+              </dl>
+              <a class="bs-service__more" href="#works" data-bs-tab-link="anime">ビズアニメの実績を見る</a>
+            </div>
+          </article>
+          <article class="bs-service">
+            <img class="bs-service__img" src="images/bizvideo.webp" width="1448" height="1086" alt="" loading="lazy">
+            <div class="bs-service__body">
+              <p class="bs-service__en">BIZ VIDEO</p>
+              <h3 class="bs-service__name">ビズ動画</h3>
+              <p class="bs-service__def">商品や会社の価値を、<wbr>映像で伝える。</p>
+              <dl class="bs-service__rows">
+                <div><dt>使う場面</dt><dd>CM・ブランド・採用・会社紹介・SNS</dd></div>
+              </dl>
+              <a class="bs-service__more" href="#works" data-bs-tab-link="video">ビズ動画の作例を見る</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 04 マンガの効果（目的ごとに、制作の目的と「何ができるようになるか」を実際の作品で見せる。
          数値の成果は、今ある資料に無いので載せていない。先方に掲載の了承をとれたら、できることの下に足す。数字や成果は作らない） ===== -->
     <section class="bs-section bs-section--cream bs6-effects" id="effects" aria-labelledby="bs-effects-title">
       <div class="bs-container">
         <div class="bs-head">
-          <p class="bs-eyebrow"><span class="bs-eyebrow__no">02</span>EFFECTS OF MANGA</p>
+          <p class="bs-eyebrow"><span class="bs-eyebrow__no">04</span>EFFECTS OF MANGA</p>
           <h2 class="bs-h2" id="bs-effects-title">マンガにすると、<em>何が変わるのか</em>。</h2>
-          <p class="bs-lead">採用やサービスの説明など、目的ごとに、マンガで何ができるようになるかを実際の作品でご紹介します。</p>
         </div>
         <article class="bs6-uc" aria-labelledby="bs6-uc-recruit">
           <div class="bs6-uc__media">
@@ -181,15 +259,15 @@
             <div class="bs6-ba">
               <div class="bs6-ba__before"><p class="bs6-ba__label">PURPOSE｜制作の目的</p><p>総合職の採用に向けた、採用マンガ（9ページ）</p></div>
               <span class="bs6-ba__arrow" aria-hidden="true"></span>
-              <div class="bs6-ba__after"><p class="bs6-ba__label">CAN DO｜できるようになること</p><p class="bs6-ba__result">求職者が、入社後の働き方や職場の雰囲気を、物語として先に知ることができる</p></div>
+              <div class="bs6-ba__after"><p class="bs6-ba__label">CAN DO｜できるようになること</p><p class="bs6-ba__result">求職者が、<wbr>入社後の働き方や<wbr>職場の雰囲気を、<wbr>物語として<wbr>先に知ることができる</p></div>
             </div>
             <div class="bs6-why">
               <!-- マンガという媒体の特徴（成果の言い切りはしない） -->
               <h4>マンガだから伝わること</h4>
               <ol>
-                <li><b>仕事の現場と空気を、場面で見せられる</b><span>募集要項の文章では伝わりにくい、働く人の一日や職場の雰囲気を、絵と流れでそのまま見せられます。</span></li>
-                <li><b>読み手が自分を重ねて読める</b><span>主人公の視点で物語が進むので、入社後の自分の姿を想像しやすくなります。</span></li>
-                <li><b>物語で、最後まで読み進められる</b><span>1ページ目から物語で引き込むので、長い説明でも順を追って読み進められます。</span></li>
+                <li><b>仕事の現場と空気を、場面で見せられる</b></li>
+                <li><b>読み手が自分を重ねて読める</b></li>
+                <li><b>物語で、最後まで読み進められる</b></li>
               </ol>
             </div>
           </div>
@@ -208,35 +286,34 @@
             <div class="bs6-ba">
               <div class="bs6-ba__before"><p class="bs6-ba__label">PURPOSE｜制作の目的</p><p>収益管理サービス（AIサービス編）の内容と、導入後の変化を伝えるマンガ（8ページ）</p></div>
               <span class="bs6-ba__arrow" aria-hidden="true"></span>
-              <div class="bs6-ba__after"><p class="bs6-ba__label">CAN DO｜できるようになること</p><p class="bs6-ba__result">検討中の人が、導入前の悩みから導入後の変化までを、物語で順を追って知ることができる</p></div>
+              <div class="bs6-ba__after"><p class="bs6-ba__label">CAN DO｜できるようになること</p><p class="bs6-ba__result">検討中の人が、<wbr>導入前の悩みから<wbr>導入後の変化までを、<wbr>物語で順を追って<wbr>知ることができる</p></div>
             </div>
             <figure class="bs6-quote"><figcaption>作中で描いた「導入後」</figcaption><blockquote>「管理できるか分からないからやらない」じゃなくて「管理できるからやってみよう」と言えるようになっていた</blockquote></figure>
             <div class="bs6-why">
               <!-- マンガという媒体の特徴（成果の言い切りはしない） -->
               <h4>マンガだから伝わること</h4>
               <ol>
-                <li><b>導入前の悩みから導入後の変化までを、物語で見せられる</b><span>読み手が「自社ならどうなるか」に置き換えて、使ったあとの姿を想像しやすくなります。</span></li>
-                <li><b>専門的な内容を、会話で順を追って説明できる</b><span>機能や仕組みを、登場人物のやりとりとして少しずつ説明できるので、前提知識がなくても読み進められます。</span></li>
-                <li><b>数字では伝えにくい変化を描ける</b><span>「やってみよう」と言えるようになった、のような気持ちや社内の空気の変化を、表情とセリフで伝えられます。</span></li>
+                <li><b>導入前の悩みから導入後の変化までを、物語で見せられる</b></li>
+                <li><b>専門的な内容を、会話で順を追って説明できる</b></li>
+                <li><b>数字では伝えにくい変化を描ける</b></li>
               </ol>
             </div>
-            <p class="bs6-uc__made"><b>制作</b>収益管理サービスの内容と、導入後の変化を8ページのマンガに。</p>
           </div>
         </article>
         <div class="bs6-offer">
-          <p>御社の強みが伝わる<strong>1ページの漫画</strong>を、<strong>無料</strong>でお作りします。</p>
-          <a class="bs-btn" href="contact.html?topic=free">無料で相談する</a>
+          <p>御社の強みが伝わる<wbr><strong>1ページの漫画</strong>を、<wbr><strong>無料</strong>で<wbr>お作りします。</p>
+          <a class="bs-btn bs-btn--lg bs6-btn--cta" href="contact.html?topic=free">無料で相談する</a>
         </div>
       </div>
     </section>
 
-    <!-- ===== 03 制作実績（最重要） ===== -->
+    <!-- ===== 05 制作実績 ===== -->
     <section class="bs-section bs-section--cream" id="works" aria-labelledby="bs-works-title">
       <div class="bs-container">
         <div class="bs-head">
-          <p class="bs-eyebrow"><span class="bs-eyebrow__no">03</span>WORKS</p>
+          <p class="bs-eyebrow"><span class="bs-eyebrow__no">05</span>WORKS</p>
           <h2 class="bs-h2" id="bs-works-title"><em>制作実績</em></h2>
-          <p class="bs-lead">まずは作品をご覧ください。カードを押すと、その場でマンガを読んだり、動画を再生したりできます。</p>
+          <p class="bs-lead">押すと、その場で読んだり再生したりできます。</p>
         </div>
 
         <!-- 一覧（タブで マンガ／アニメ／動画 を切り替える） -->
@@ -265,82 +342,6 @@
       </div>
     </section>
 
-    <!-- ===== 04 課題解決（効果は言い切らない。おすすめの表現は目安） ===== -->
-    <section class="bs-section" id="solutions" aria-labelledby="bs-solutions-title">
-      <div class="bs-container">
-        <div class="bs-head">
-          <p class="bs-eyebrow"><span class="bs-eyebrow__no">04</span>SOLUTIONS</p>
-          <h2 class="bs-h2" id="bs-solutions-title">こんな<em>お悩み</em>はありませんか？</h2>
-          <p class="bs-lead">文字だけでは伝わりにくいことを、物語と映像で伝えやすくします。</p>
-        </div>
-        <ul class="bs-solutions">
-          <li><p class="bs-solutions__pain">商品・サービスの魅力が、うまく伝わらない</p><p class="bs-solutions__fix">使う前の悩みから使った後の変化までを物語にして、魅力を伝えやすくします。</p><p class="bs-solutions__fit"><span>マンガ</span><span>アニメ</span><span>動画</span></p></li>
-          <li><p class="bs-solutions__pain">専門的・複雑な内容を、分かりやすく説明できない</p><p class="bs-solutions__fix">登場人物の会話と図解で、難しい内容を順を追って説明します。</p><p class="bs-solutions__fit"><span>マンガ</span></p></li>
-          <li><p class="bs-solutions__pain">Webサイトや広告で、印象に残らない</p><p class="bs-solutions__fix">動きと音のある短い映像で、目を止めてもらうきっかけをつくります。</p><p class="bs-solutions__fit"><span>アニメ</span><span>動画</span></p></li>
-          <li><p class="bs-solutions__pain">採用で、会社の雰囲気や仕事の魅力が伝わらない</p><p class="bs-solutions__fix">先輩社員の一日や職場の空気を、物語や映像で見せます。</p><p class="bs-solutions__fit"><span>マンガ</span><span>動画</span></p></li>
-          <li><p class="bs-solutions__pain">営業資料だけでは、理解・納得してもらいにくい</p><p class="bs-solutions__fix">資料やメールに添えて、商談の前に内容をつかんでもらいやすくします。</p><p class="bs-solutions__fit"><span>マンガ</span></p></li>
-          <li><p class="bs-solutions__pain">企業理念やブランドの想いが、社内外に広がらない</p><p class="bs-solutions__fix">創業の想いやビジョンを、記憶に残る物語として届けます。</p><p class="bs-solutions__fit"><span>マンガ</span><span>アニメ</span><span>動画</span></p></li>
-          <li><p class="bs-solutions__pain">研修やマニュアルの内容が、理解・定着しにくい</p><p class="bs-solutions__fix">業務の流れや注意点を、場面として見せて理解を助けます。</p><p class="bs-solutions__fit"><span>マンガ</span><span>動画</span></p></li>
-          <li class="bs-solutions__more"><p class="bs-solutions__pain">そのほかのお悩みも</p><p class="bs-solutions__fix">どの表現が合うか分からない段階でも、まずはお聞かせください。</p><a class="bs-solutions__link" href="contact.html">相談してみる</a></li>
-        </ul>
-        <p class="bs-note bs-note--center">※ おすすめの表現は目安です。目的や使う場面に合わせてご提案します。</p>
-      </div>
-    </section>
-
-    <!-- ===== 05 サービス（3つの違い。押すと制作実績の該当タブへ） ===== -->
-    <section class="bs-section bs-section--cream" id="services" aria-labelledby="bs-services-title">
-      <div class="bs-container">
-        <div class="bs-head">
-          <p class="bs-eyebrow"><span class="bs-eyebrow__no">05</span>SERVICES</p>
-          <h2 class="bs-h2" id="bs-services-title">伝える相手に合わせて、<em>3つの表現</em>から。</h2>
-        </div>
-        <div class="bs-services3">
-          <article class="bs-service">
-            <img class="bs-service__img" src="images/bizmanga.webp" width="1448" height="1086" alt="" loading="lazy">
-            <div class="bs-service__body">
-              <p class="bs-service__en">BIZ MANGA</p>
-              <h3 class="bs-service__name">ビズマンガ</h3>
-              <p class="bs-service__def">企業の情報や商品・サービスの魅力を、ストーリーとビジュアルで分かりやすく伝える漫画制作。</p>
-              <dl class="bs-service__rows">
-                <div><dt>向いている課題</dt><dd>複雑な内容の説明、採用、営業資料、研修</dd></div>
-                <div><dt>用途</dt><dd>商品紹介・採用・広告・会社紹介・営業資料・研修・観光／インバウンド・IR</dd></div>
-                <div><dt>形式</dt><dd>紙面の漫画、縦スクロール漫画</dd></div>
-              </dl>
-              <a class="bs-service__more" href="#works" data-bs-tab-link="manga">ビズマンガの実績を見る</a>
-            </div>
-          </article>
-          <article class="bs-service">
-            <img class="bs-service__img" src="images/bizanime.webp" width="1448" height="1086" alt="" loading="lazy">
-            <div class="bs-service__body">
-              <p class="bs-service__en">BIZ ANIME</p>
-              <h3 class="bs-service__name">ビズアニメ</h3>
-              <p class="bs-service__def">AI動画生成技術と人の演出力を掛け合わせ、広告・VTuber演出・MV・IP開発まで幅広く対応するアニメーション制作。</p>
-              <dl class="bs-service__rows">
-                <div><dt>向いている課題</dt><dd>広告・SNSで目を止めてもらう、世界観やキャラクターを伝える</dd></div>
-                <div><dt>対応領域</dt><dd>広告アニメーション・VTuber演出・ミュージックビデオ・IP／オリジナル作品</dd></div>
-                <div><dt>組み合わせ</dt><dd>マンガでつくった物語とキャラクターを、アニメへ展開することもできます</dd></div>
-              </dl>
-              <a class="bs-service__more" href="#works" data-bs-tab-link="anime">ビズアニメの実績を見る</a>
-            </div>
-          </article>
-          <article class="bs-service">
-            <img class="bs-service__img" src="images/bizvideo.webp" width="1448" height="1086" alt="" loading="lazy">
-            <div class="bs-service__body">
-              <p class="bs-service__en">BIZ VIDEO</p>
-              <h3 class="bs-service__name">ビズ動画</h3>
-              <p class="bs-service__def">映像を通じて、企業・商品・サービスの価値を伝える動画制作。</p>
-              <dl class="bs-service__rows">
-                <div><dt>向いている課題</dt><dd>商品の動きや使う場面、働く現場の空気を伝える</dd></div>
-                <div><dt>作例のジャンル</dt><dd>商品・サービスのCM、ブランド、採用・会社紹介、ストーリー・MV、VLOG・SNS</dd></div>
-                <div><dt>作例の表現</dt><dd>雪山や海外の街並みなど、撮影が難しい場面も描いた作例があります</dd></div>
-              </dl>
-              <a class="bs-service__more" href="#works" data-bs-tab-link="video">ビズ動画の作例を見る</a>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
     <!-- ===== 06 選ばれる理由（3つのサービスに共通しないものは、サービスの札を付ける） ===== -->
     <section class="bs-section" id="reasons" aria-labelledby="bs-reasons-title">
       <div class="bs-container">
@@ -352,133 +353,88 @@
           <li class="bs-reason">
             <span class="bs-reason__num">01</span>
             <p class="bs-reason__tag">3つのサービス共通</p>
-            <h3 class="bs-reason__title">マンガ・アニメ・動画を、<em>まとめて相談</em>できる</h3>
-            <p>どの表現が合うか決まっていなくても大丈夫です。複数の表現を比べながらご相談いただけます。</p>
+            <h3 class="bs-reason__title">マンガ・アニメ・動画を、<wbr><em>まとめて相談</em>できる</h3>
+            <p>どれが合うか決まっていなくても大丈夫です。</p>
           </li>
           <li class="bs-reason">
             <span class="bs-reason__num">02</span>
             <p class="bs-reason__tag">3つのサービス共通</p>
-            <h3 class="bs-reason__title">目的と相手に合わせて、<em>表現を選べる</em></h3>
-            <p>誰に、何を、どこで伝えるかをうかがい、マンガ・アニメ・動画のどれが合うかをご提案します。</p>
+            <h3 class="bs-reason__title">目的と相手に合わせて、<wbr><em>表現を選べる</em></h3>
+            <p>誰に・何を・どこで伝えるかから、合う表現をご提案します。</p>
           </li>
           <li class="bs-reason">
             <span class="bs-reason__num">03</span>
             <p class="bs-reason__tag">ビズマンガ × ビズアニメ</p>
-            <h3 class="bs-reason__title">1つの物語を、<em>マンガからアニメへ</em></h3>
-            <p>マンガでつくったキャラクターと世界観のまま、アニメへ展開できます。</p>
+            <h3 class="bs-reason__title">1つの物語を、<wbr><em>マンガからアニメへ</em></h3>
+            <p>同じキャラクターと世界観のまま、アニメにできます。</p>
           </li>
           <li class="bs-reason">
             <span class="bs-reason__num">04</span>
             <p class="bs-reason__tag">ビズマンガ</p>
-            <h3 class="bs-reason__title">シナリオから<em>任せられる</em></h3>
-            <p>ヒアリングをもとに、伝えたいことが届くシナリオ・構成からご提案します。</p>
+            <h3 class="bs-reason__title">シナリオから<wbr><em>任せられる</em></h3>
+            <p>ヒアリングをもとに、シナリオと構成からご提案します。</p>
           </li>
           <li class="bs-reason">
             <span class="bs-reason__num">05</span>
             <p class="bs-reason__tag">ビズマンガ</p>
-            <h3 class="bs-reason__title">審査を通過した作家陣 ＋ <em>専属ディレクター</em></h3>
-            <p>独自の審査をクリアした作家のみが登録。専属ディレクターが企画意図を作家へ伝え、原稿の品質を確かめます。</p>
+            <h3 class="bs-reason__title">審査を通過した作家陣<wbr>＋<wbr><em>専属ディレクター</em></h3>
+            <p>ディレクターが企画の意図を作家へ伝え、原稿の品質を確かめます。</p>
           </li>
           <li class="bs-reason">
             <span class="bs-reason__num">06</span>
             <p class="bs-reason__tag">ビズマンガ</p>
-            <h3 class="bs-reason__title">作画は完全オリジナル、<em>著作権は譲渡</em></h3>
-            <p>納品時に全データの著作権・利用権をクライアントへ譲渡します。</p>
+            <h3 class="bs-reason__title">作画は完全オリジナル、<wbr><em>著作権は譲渡</em></h3>
+            <p>納品時に、全データの著作権・利用権をお渡しします。</p>
           </li>
         </ol>
       </div>
     </section>
 
-    <!-- ===== 07 導入のメリット（制作物を使う企業側のメリット。効果は言い切らない） ===== -->
-    <section class="bs-section bs-section--ink" id="benefits" aria-labelledby="bs-benefits-title">
-      <div class="bs-container">
-        <div class="bs-head bs-head--dark">
-          <p class="bs-eyebrow"><span class="bs-eyebrow__no">07</span>BENEFITS</p>
-          <h2 class="bs-h2" id="bs-benefits-title">物語にすると、<em>伝わり方が変わる</em>。</h2>
-        </div>
-        <ul class="bs-benefits">
-          <li><span>01</span><h3>複雑な情報を、目で見て分かる形に</h3><p>文章や図表だけでは伝わりにくい内容を、絵と流れで整理して伝えやすくします。</p></li>
-          <li><span>02</span><h3>想いや空気感まで、物語で届ける</h3><p>数字や仕様では伝えきれない想い・雰囲気を、ストーリーや映像で表現できます。</p></li>
-          <li><span>03</span><h3>相手に合わせて、表現を選べる</h3><p>読んでほしい相手にはマンガ、短く印象を残したい相手にはアニメ・動画、と選べます。</p></li>
-          <li><span>04</span><h3>Web・SNS・広告・営業・採用で使える</h3><p>1つの作品を、ホームページや資料、SNS、採用活動など複数の場面で活用できます。</p></li>
-          <li><span>05</span><h3>会社やサービスの印象づくりに</h3><p>親しみやすい表現で、会社やサービスを覚えてもらうきっかけをつくります。</p></li>
-          <li><span>06</span><h3>複数の接点に広げる企画も</h3><p>マンガからアニメへ、など1つの物語を複数の接点で使う企画もご相談いただけます。</p></li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- ===== 08 活用シーン（8つ。押すと制作実績の該当タブへ。おすすめの表現は目安） ===== -->
-    <section class="bs-section bs-section--cream" id="usecases" aria-labelledby="bs-usecases-title">
-      <div class="bs-container">
-        <div class="bs-head">
-          <p class="bs-eyebrow"><span class="bs-eyebrow__no">08</span>USE CASES</p>
-          <h2 class="bs-h2" id="bs-usecases-title"><em>活用シーン</em></h2>
-          <p class="bs-lead">押すと、近い制作実績をご覧いただけます。</p>
-        </div>
-        <ul class="bs-usecases">
-          <li><a href="#works" data-bs-tab-link="video"><img src="images/video/v04.webp" width="640" height="252" alt="" loading="lazy"><span class="bs-usecases__body"><b>広告・プロモーション</b><span>Web広告、SNS広告、キャンペーン、サービス告知</span><i>アニメ／動画</i></span></a></li>
-          <li><a href="#works" data-bs-tab-link="manga"><img src="images/manga/asobi-recruit/03.webp" width="900" height="1125" alt="" loading="lazy"><span class="bs-usecases__body"><b>採用・人材獲得</b><span>会社紹介、仕事紹介、採用コンテンツ、社員紹介</span><i>マンガ／動画</i></span></a></li>
-          <li><a href="#works" data-bs-tab-link="manga"><img src="images/manga/opro-soasc/03.webp" width="900" height="1273" alt="" loading="lazy"><span class="bs-usecases__body"><b>営業・商品説明</b><span>サービス紹介、営業資料、展示会、商談用コンテンツ</span><i>マンガ</i></span></a></li>
-          <li><a href="#works" data-bs-tab-link="video"><img src="images/video/v19.webp" width="640" height="252" alt="" loading="lazy"><span class="bs-usecases__body"><b>企業ブランディング</b><span>企業紹介、創業ストーリー、理念・ビジョンの発信</span><i>マンガ／アニメ／動画</i></span></a></li>
-          <li><a href="#works" data-bs-tab-link="manga"><img src="images/manga/bizsalesnavi/04.webp" width="900" height="1257" alt="" loading="lazy"><span class="bs-usecases__body"><b>教育・研修</b><span>社内研修、コンプライアンス、業務マニュアル、教育教材</span><i>マンガ／動画</i></span></a></li>
-          <li><a href="#works" data-bs-tab-link="anime"><img src="https://i.ytimg.com/vi/W4ALRjhxyKw/hqdefault.jpg" width="480" height="360" alt="" loading="lazy"><span class="bs-usecases__body"><b>エンタメ・IP開発</b><span>オリジナル作品、キャラクター、MV、VTuber関連映像</span><i>アニメ</i></span></a></li>
-          <li><a href="#works" data-bs-tab-link="video"><img src="images/video/v34.webp" width="640" height="252" alt="" loading="lazy"><span class="bs-usecases__body"><b>観光・地域PR</b><span>観光案内、地域ブランディング、インバウンド向けコンテンツ</span><i>マンガ／動画</i></span></a></li>
-          <li><a href="#works" data-bs-tab-link="video"><img src="images/video/v36.webp" width="640" height="252" alt="" loading="lazy"><span class="bs-usecases__body"><b>SNS・コンテンツ発信</b><span>ショート動画、YouTube、SNS投稿、継続的な情報発信</span><i>アニメ／動画</i></span></a></li>
-        </ul>
-        <p class="bs-note bs-note--center">※ おすすめの表現は目安です。</p>
-      </div>
-    </section>
-
-    <!-- ===== 09 制作の流れ（共通の流れ。納期・修正回数はサービスごとに異なるので書かない） ===== -->
+    <!-- ===== 07 制作の流れ（共通の流れ。納期・修正回数はサービスごとに異なるので書かない） ===== -->
     <section class="bs-section" id="flow" aria-labelledby="bs-flow-title">
       <div class="bs-container">
         <div class="bs-head">
-          <p class="bs-eyebrow"><span class="bs-eyebrow__no">09</span>PROCESS</p>
+          <p class="bs-eyebrow"><span class="bs-eyebrow__no">07</span>PROCESS</p>
           <h2 class="bs-h2" id="bs-flow-title"><em>制作の流れ</em></h2>
-          <p class="bs-lead">はじめてのご依頼でも、ご相談から納品まで順を追って進めます。</p>
         </div>
         <ol class="bs-process">
-          <li><span class="bs-process__num">01</span><h3>お問い合わせ・ご相談</h3><p>フォームからお気軽にご連絡ください。</p></li>
-          <li><span class="bs-process__num">02</span><h3>ヒアリング・目的の確認</h3><p>伝えたいこと、相手、使う場面をうかがいます。</p></li>
-          <li><span class="bs-process__num">03</span><h3>企画・構成・お見積もり</h3><p>表現の方法と構成、お見積もりをご提案します。</p></li>
-          <li><span class="bs-process__num">04</span><h3>制作</h3><p>マンガ・アニメ・動画を制作します。</p></li>
-          <li><span class="bs-process__num">05</span><h3>ご確認・修正</h3><p>途中の段階でご確認いただき、修正します。</p></li>
-          <li><span class="bs-process__num">06</span><h3>納品</h3><p>使う場面に合わせた形式でお渡しします。</p></li>
+          <li><span class="bs-process__num">01</span><h3>お問い合わせ<br>ご相談</h3><p>フォームからご連絡ください。</p></li>
+          <li><span class="bs-process__num">02</span><h3>ヒアリング<br>目的の確認</h3><p>伝えたいこと・相手・使う場面をうかがいます。</p></li>
+          <li><span class="bs-process__num">03</span><h3>企画・構成<br>お見積もり</h3><p>表現と構成、お見積もりをご提案します。</p></li>
+          <li><span class="bs-process__num">04</span><h3>制作</h3><p>マンガ・アニメ・動画をつくります。</p></li>
+          <li><span class="bs-process__num">05</span><h3>ご確認<br>修正</h3><p>途中でご確認いただき、直します。</p></li>
+          <li><span class="bs-process__num">06</span><h3>納品</h3><p>使う場面に合わせた形でお渡しします。</p></li>
         </ol>
-        <p class="bs-note bs-note--center">※ 工程・期間・修正の回数は、サービスや内容によって異なります。個別にご案内します。</p>
+        <p class="bs-note bs-note--center">※ 期間・修正の回数は、内容によって異なります。個別にご案内します。</p>
       </div>
     </section>
 
-    <!-- ===== 10 よくある質問（確かめていない条件は書かず「個別にご案内」にする） ===== -->
+    <!-- ===== 08 よくある質問（はじめての人が気にすることだけ。確かめていない条件は書かず「個別にご案内」にする） ===== -->
     <section class="bs-section bs-section--cream" id="faq" aria-labelledby="bs-faq-title">
       <div class="bs-container">
         <div class="bs-head">
-          <p class="bs-eyebrow"><span class="bs-eyebrow__no">10</span>FAQ</p>
+          <p class="bs-eyebrow"><span class="bs-eyebrow__no">08</span>FAQ</p>
           <h2 class="bs-h2" id="bs-faq-title"><em>よくある質問</em></h2>
         </div>
         <div class="bs-faq">
-          <details class="bs-faq__item"><summary>相談や見積もりだけでも大丈夫ですか？</summary><p>はい。ご相談・お見積もりは無料です。お気軽にお問い合わせください。</p></details>
+          <details class="bs-faq__item"><summary>相談や見積もりだけでも大丈夫ですか？</summary><p>はい。ご相談・お見積もりは無料です。</p></details>
           <details class="bs-faq__item"><summary>1ページの漫画を無料で作ってもらえるのは、どんな内容ですか？</summary><p>御社の事業の強みを、お客様の課題が解決するまでの流れとして1ページの漫画にしたものです。対象や条件は、お問い合わせのあとにご案内します。</p></details>
-          <details class="bs-faq__item"><summary>マンガ・アニメ・動画のどれが合うか分からなくても相談できますか？</summary><p>はい。目的や使う場面をうかがい、合う表現や組み合わせをご提案します。</p></details>
-          <details class="bs-faq__item"><summary>企画やシナリオから相談できますか？</summary><p>はい。ヒアリングをもとに、企画・構成の段階からご相談いただけます。</p></details>
-          <details class="bs-faq__item"><summary>予算が決まっていなくても相談できますか？</summary><p>はい。目的と内容をうかがい、ご予算に合わせた進め方をご提案します。</p></details>
-          <details class="bs-faq__item"><summary>素材や原稿がなくても依頼できますか？</summary><p>ご相談ください。ヒアリングの内容をもとに、構成からご提案します。</p></details>
+          <details class="bs-faq__item"><summary>マンガ・アニメ・動画のどれが合うか分からなくても相談できますか？</summary><p>はい。目的や使う場面をうかがい、合う表現をご提案します。</p></details>
+          <details class="bs-faq__item"><summary>予算や素材が決まっていなくても相談できますか？</summary><p>はい。目的と内容をうかがい、ご予算に合わせた進め方をご提案します。</p></details>
           <details class="bs-faq__item"><summary>制作期間はどのくらいですか？</summary><p>内容・ページ数・映像の長さによって異なります。ご希望の時期をうかがい、個別にご案内します。</p></details>
-          <details class="bs-faq__item"><summary>修正は何回までできますか？</summary><p>サービスや内容によって異なります。個別にご案内します。</p></details>
           <details class="bs-faq__item"><summary>制作物の著作権や、使える範囲はどうなりますか？</summary><p>ビズマンガは、納品時に著作権・利用権をお客様へ譲渡します。ビズアニメ・ビズ動画は、ご契約の際に個別にご案内します。</p></details>
-          <details class="bs-faq__item"><summary>Webサイト・SNS・広告など、複数の媒体で使えますか？</summary><p>ご契約の範囲で、複数の媒体でご活用いただけます。使う予定の媒体をお知らせいただければ、合わせてご案内します。</p></details>
         </div>
       </div>
     </section>
 
-    <!-- ===== 11 お問い合わせ（お問い合わせ画面へ。会社の情報もここに） ===== -->
+    <!-- ===== 09 お問い合わせ（お問い合わせ画面へ。会社の情報もここに） ===== -->
     <section class="bs-end" id="contact" aria-labelledby="bs-end-title">
       <div class="bs-end__inner">
-        <p class="bs-end__eyebrow">11 CONTACT</p>
+        <p class="bs-end__eyebrow">09 CONTACT</p>
         <h2 class="bs-end__title" id="bs-end-title">伝えたいことを、<br><em>伝わるカタチ</em>に。</h2>
-        <p class="bs-end__text">まずは、やりたいことをお聞かせください。使うサービスが決まっていなくても構いません。</p>
+        <p class="bs-end__text">まずは、<wbr>やりたいことを<wbr>お聞かせください。</p>
         <div class="bs-end__actions">
-          <a class="bs-btn bs-btn--lg bs-btn--on-dark" href="contact.html">無料相談・お見積もり</a>
+          <a class="bs-btn bs-btn--lg bs-btn--on-dark bs6-btn--cta" href="contact.html">無料相談・お見積もり</a>
           <a class="bs-btn bs-btn--lg bs-btn--ghost" href="contact.html?topic=free">1ページ漫画の無料制作を相談する</a>
         </div>
         <dl class="bs-end__company">
@@ -500,6 +456,9 @@
       <p class="bs-footer__copy"><small>&copy; 2026 合同会社KUROM</small></p>
     </div>
   </footer>
+
+  <!-- 画面下の相談ボタン（トップを過ぎてから、お問い合わせの章が見えるまで出す） -->
+  <a class="bs-float bs-float--cta" href="contact.html" data-bs-float hidden><span class="bs-float__label">無料</span>相談・お見積もり<span class="bs-float__go">お問い合わせ</span></a>
 
   <!-- 動画を見るための窓 -->
   <div class="bs-modal" data-bs-modal hidden>
