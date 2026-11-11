@@ -1266,8 +1266,8 @@ html:has(.bs-page) { scroll-behavior: smooth; scroll-padding-top: calc(var(--bs-
 }
 @media (max-width: 560px) {
   .bs6-brand__tag { font-size: 11px; padding: 5px 10px; }
-  .bs6-uc__title { white-space: normal; }
-  .bs6-uc__title small { display: block; margin: 6px 0 0; }
+  .bs6-uc__title { font-size: clamp(30px, 9vw, 48px); }
+  .bs6-uc__title small { font-size: 16px; margin-left: 6px; }
   .bs6-uc__industry { flex-direction: column; gap: 2px; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1500,4 +1500,16 @@ html:has(.bs-page) { scroll-behavior: smooth; scroll-padding-top: calc(var(--bs-
   .bs-flow7__arrow { width: 30px; height: 30px; right: calc(var(--slant) * 0.47 - 15px - 2px); }
   .bs-flow7__arrow svg { width: 16px; height: 16px; }
   .bs-flow7-section .bs-head { margin-bottom: 48px; }
+}
+
+/* v7: スマホ幅の調整（取引先の見出しは「、」の後で改行・制作の流れは見出しの左右の漫画を出し、段の頭にも矢印） */
+.bs-clients__title { word-break: keep-all; overflow-wrap: anywhere; }
+.bs-flow7__arrow--in { display: none; }
+@media (max-width: 767px) {
+  .bs-clients__title { text-wrap: wrap; }
+  .bs-flow7-section .bs-flow7__decor { display: block; opacity: 1; top: 34px; z-index: 2; }
+  .bs-flow7-section .bs-flow7__decor--left { left: 4px; width: 78px; }
+  .bs-flow7-section .bs-flow7__decor--right { right: 2px; width: 112px; top: 44px; }
+  .bs-flow7 { padding-left: 22px; }
+  .bs-flow7 .bs-flow7__arrow--in { display: flex; right: auto; left: -32px; }
 }
