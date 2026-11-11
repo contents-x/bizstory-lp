@@ -88,7 +88,7 @@
             <a class="bs-btn bs-btn--lg bs6-btn--cta" href="contact.html">無料相談・お見積もり</a>
             <a class="bs-btn bs6-btn--line" href="#works">制作実績を見る</a>
           </div>
-          <p class="bs6-hero__credit"><b>01 MANGA</b>採用マンガ</p>
+          <div class="bs6-anime__label bs6-hero__label"><span class="bs6-num">01</span><b>MANGA</b><p>採用マンガ</p></div>
         </div>
         <div class="bs6-hero__visual">
           <button class="bs6-page" type="button" data-bs-read="asobi-recruit" aria-haspopup="dialog">
@@ -390,22 +390,83 @@
       </div>
     </section>
 
-    <!-- ===== 07 制作の流れ（共通の流れ。納期・修正回数はサービスごとに異なるので書かない） ===== -->
-    <section class="bs-section" id="flow" aria-labelledby="bs-flow-title">
+    <!-- ===== 07 制作の流れ（漫画の6コマ。依頼者の採用デザイン BIZ_STORY_Process_Claude_Package に合わせた。
+         文字・番号・枠・矢印は HTML/CSS、漫画の絵だけ画像（images/process/）。納期・修正回数はサービスごとに異なるので書かない） ===== -->
+    <section class="bs-section bs-flow7-section" id="flow" aria-labelledby="bs-flow-title">
+      <img class="bs-flow7__decor bs-flow7__decor--left" src="images/process/decor-left.webp" width="560" height="700" alt="" aria-hidden="true" loading="lazy" decoding="async">
+      <img class="bs-flow7__decor bs-flow7__decor--right" src="images/process/decor-right.webp" width="900" height="675" alt="" aria-hidden="true" loading="lazy" decoding="async">
       <div class="bs-container">
         <div class="bs-head">
           <p class="bs-eyebrow"><span class="bs-eyebrow__no">07</span>PROCESS</p>
           <h2 class="bs-h2" id="bs-flow-title"><em>制作の流れ</em></h2>
         </div>
-        <ol class="bs-process">
-          <li><span class="bs-process__num">01</span><h3>お問い合わせ<br>ご相談</h3><p>フォームからご連絡ください。</p></li>
-          <li><span class="bs-process__num">02</span><h3>ヒアリング<br>目的の確認</h3><p>伝えたいこと・相手・使う場面をうかがいます。</p></li>
-          <li><span class="bs-process__num">03</span><h3>企画・構成<br>お見積もり</h3><p>表現と構成、お見積もりをご提案します。</p></li>
-          <li><span class="bs-process__num">04</span><h3>制作</h3><p>マンガ・アニメ・動画をつくります。</p></li>
-          <li><span class="bs-process__num">05</span><h3>ご確認<br>修正</h3><p>途中でご確認いただき、直します。</p></li>
-          <li><span class="bs-process__num">06</span><h3>納品</h3><p>使う場面に合わせた形でお渡しします。</p></li>
+        <ol class="bs-flow7">
+          <li class="bs-flow7__item">
+            <span class="bs-flow7__step">01</span>
+            <div class="bs-flow7__panel">
+              <div class="bs-flow7__inner">
+                <h3 class="bs-flow7__title">お問い合わせ<br>ご相談</h3>
+                <p class="bs-flow7__text">フォームから<wbr>ご連絡ください。</p>
+                <img class="bs-flow7__img" src="images/process/scene-01.webp" width="640" height="480" alt="" loading="lazy" decoding="async">
+              </div>
+            </div>
+            <span class="bs-flow7__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M5 12h12M12 6l6 6-6 6"/></svg></span>
+          </li>
+          <li class="bs-flow7__item">
+            <span class="bs-flow7__step">02</span>
+            <div class="bs-flow7__panel">
+              <div class="bs-flow7__inner">
+                <h3 class="bs-flow7__title">ヒアリング<br>目的の確認</h3>
+                <p class="bs-flow7__text">伝えたいこと・<wbr>相手・<wbr>使う場面を<wbr>うかがいます。</p>
+                <img class="bs-flow7__img" src="images/process/scene-02.webp" width="640" height="480" alt="" loading="lazy" decoding="async">
+              </div>
+            </div>
+            <span class="bs-flow7__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M5 12h12M12 6l6 6-6 6"/></svg></span>
+          </li>
+          <li class="bs-flow7__item">
+            <span class="bs-flow7__step">03</span>
+            <div class="bs-flow7__panel">
+              <div class="bs-flow7__inner">
+                <h3 class="bs-flow7__title">企画・構成<br>お見積もり</h3>
+                <p class="bs-flow7__text">表現と構成、<wbr>お見積もりを<wbr>ご提案します。</p>
+                <img class="bs-flow7__img" src="images/process/scene-03.webp" width="640" height="480" alt="" loading="lazy" decoding="async">
+              </div>
+            </div>
+            <span class="bs-flow7__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M5 12h12M12 6l6 6-6 6"/></svg></span>
+          </li>
+          <li class="bs-flow7__item">
+            <span class="bs-flow7__step">04</span>
+            <div class="bs-flow7__panel">
+              <div class="bs-flow7__inner">
+                <h3 class="bs-flow7__title">制作</h3>
+                <p class="bs-flow7__text">マンガ・<wbr>アニメ・<wbr>動画を<wbr>つくります。</p>
+                <img class="bs-flow7__img" src="images/process/scene-04.webp" width="640" height="480" alt="" loading="lazy" decoding="async">
+              </div>
+            </div>
+            <span class="bs-flow7__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M5 12h12M12 6l6 6-6 6"/></svg></span>
+          </li>
+          <li class="bs-flow7__item">
+            <span class="bs-flow7__step">05</span>
+            <div class="bs-flow7__panel">
+              <div class="bs-flow7__inner">
+                <h3 class="bs-flow7__title">ご確認<br>修正</h3>
+                <p class="bs-flow7__text">途中で<wbr>ご確認いただき、<wbr>直します。</p>
+                <img class="bs-flow7__img" src="images/process/scene-05.webp" width="640" height="480" alt="" loading="lazy" decoding="async">
+              </div>
+            </div>
+            <span class="bs-flow7__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M5 12h12M12 6l6 6-6 6"/></svg></span>
+          </li>
+          <li class="bs-flow7__item">
+            <span class="bs-flow7__step">06</span>
+            <div class="bs-flow7__panel">
+              <div class="bs-flow7__inner">
+                <h3 class="bs-flow7__title">納品</h3>
+                <p class="bs-flow7__text">使う場面に<wbr>合わせた形で<wbr>お渡しします。</p>
+                <img class="bs-flow7__img" src="images/process/scene-06.webp" width="640" height="480" alt="" loading="lazy" decoding="async">
+              </div>
+            </div>
+          </li>
         </ol>
-        <p class="bs-note bs-note--center">※ 期間・修正の回数は、内容によって異なります。個別にご案内します。</p>
       </div>
     </section>
 
@@ -457,8 +518,8 @@
     </div>
   </footer>
 
-  <!-- 画面下の相談ボタン（トップを過ぎてから、お問い合わせの章が見えるまで出す） -->
-  <a class="bs-float bs-float--cta" href="contact.html" data-bs-float hidden><span class="bs-float__label">無料</span>相談・お見積もり<span class="bs-float__go">お問い合わせ</span></a>
+  <!-- 画面右下の丸い相談ボタン（トップの「無料で」の丸と同じ形。トップを過ぎてから、お問い合わせの章が見えるまで出す） -->
+  <a class="bs-float" href="contact.html" data-bs-float hidden><small>お問い合わせ</small><span><b>無料</b>相談<br>お見積もり</span><u>相談する ›</u></a>
 
   <!-- 動画を見るための窓 -->
   <div class="bs-modal" data-bs-modal hidden>

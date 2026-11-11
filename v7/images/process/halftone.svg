@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="380" height="220" viewBox="0 0 380 220" aria-hidden="true">
+<defs><pattern id="dots" width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.4" fill="#F0B62B" opacity=".78"/></pattern><linearGradient id="fade" x1="0" y1="0" x2="1" y2="1"><stop stop-color="white"/><stop offset="1" stop-color="black"/></linearGradient><mask id="mask"><rect width="380" height="220" fill="url(#fade)"/></mask></defs>
+<rect width="380" height="220" fill="url(#dots)" mask="url(#mask)"/>
+</svg>
